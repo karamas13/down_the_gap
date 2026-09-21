@@ -1,13 +1,28 @@
 export type CategoryType = 'all' | 'root' | 'leafy' | 'boxes';
 
+export type DayCode = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+
 export interface Product {
   id: string;
   title: string;
   description: string;
   imageUrl: string;
   season: 'winter' | 'summer';
-  isAvailable: boolean; // true: Διαθέσιμο στη λαϊκή / false: Εκτός εποχής
-  category?: string;    // π.χ. "Λαχανικά", "Φρούτα", "Μαρμελάδες"
+  isAvailable: boolean;
+  category?: string;
+}
+
+export interface Market {
+  id: string;
+  dayCode: DayCode;
+  day: string;
+  locationName: string;
+  address: string;
+  hours: string;
+  standInfo: string;
+  isOrganicOnly: boolean;
+  googleMapsUrl?: string;
+  isActive: boolean;
 }
 
 export interface TimelineItem {
@@ -31,10 +46,6 @@ export interface InquiryFormData {
   inquiryType: 'general' | 'order' | 'visit';
   message: string;
 }
-
-// types/index.ts
-
-export type DayCode = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 
 export interface MarketSchedule {
   id: string;

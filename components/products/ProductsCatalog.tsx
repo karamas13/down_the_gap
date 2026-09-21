@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ProductCard } from './ProductCard';
 import { Product } from '@/types/index';
+import { supabase } from '@/lib/supabase';
 
 interface ProductsCatalogProps {
   products?: Product[];
@@ -39,11 +40,54 @@ const SEASON_CONFIG = {
   },
 };
 
-export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products = [] }) => {
+export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: initialProducts }) => {
+  const [products, setProducts] = useState<Product[]>(initialProducts || []);
+  const [loading, setLoading] = useState<boolean>(!initialProducts || initialProducts.length === 0);
   const [activeSeason, setActiveSeason] = useState<SeasonFilter>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const currentTheme = SEASON_CONFIG[activeSeason];
+
+  // Fetch προϊόντων από το Supabase αν δεν έχουν δοθεί ως props
+  useEffect(() => {
+    if (initialProducts && initialProducts.length > 0) {
+      setProducts(initialProducts);
+      setLoading(false);
+      return;
+    }
+
+    const fetchProductsFromBackend = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (data) {
+          // Αντιστοίχιση των πεδίων της βάσης (snake_case) με το TypeScript Interface (camelCase)
+          const mappedProducts: Product[] = data.map((p) => ({
+            id: p.id,
+            title: p.title,
+            description: p.description,
+            imageUrl: p.image_url || p.imageUrl,
+            season: p.season,
+            isAvailable: p.is_available ?? p.isAvailable ?? true,
+            category: p.category,
+          }));
+          setProducts(mappedProducts);
+        }
+      } catch (err) {
+        console.error('Σφάλμα κατά την φόρτωση των προϊόντων:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductsFromBackend();
+  }, [initialProducts]);
 
   // Υπολογισμός πλήθους προϊόντων ανά εποχή
   const counts = useMemo(() => {
@@ -184,26 +228,41 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products = [] 
           </div>
         </div>
 
-        {/* Product Grid Layout */}
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProducts.map((product, idx) => (
-              <motion.div
-                layout
-                key={product.id || idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.25 }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
+        {/* Loading Skeleton */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+              <div key={n} className="bg-white/80 rounded-3xl h-80 border border-[#2D4030]/10 p-4 flex flex-col justify-between">
+                <div className="bg-gray-200 h-48 rounded-2xl w-full"></div>
+                <div className="space-y-2 pt-4">
+                  <div className="bg-gray-200 h-4 rounded-md w-3/4"></div>
+                  <div className="bg-gray-200 h-3 rounded-md w-1/2"></div>
+                </div>
+              </div>
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </div>
+        ) : (
+          /* Product Grid Layout */
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.map((product, idx) => (
+                <motion.div
+                  layout
+                  key={product.id || idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
 
         {/* Empty State */}
-        {filteredProducts.length === 0 && (
+        {!loading && filteredProducts.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

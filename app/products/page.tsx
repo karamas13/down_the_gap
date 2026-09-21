@@ -6,7 +6,7 @@ export default function ProductsPage() {
   return (
     <main className="min-h-screen bg-[#FAF7F2]">
       <ProductHero />
-      <ProductsCatalog products={MOCK_PRODUCTS}/>
+      <ProductsCatalog />
     </main>
   );
 }

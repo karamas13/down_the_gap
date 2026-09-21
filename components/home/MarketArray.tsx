@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MOCK_MARKETS } from '../../data/mockMarkets';
-import { DayCode } from '../../types';
+import { supabase } from '@/lib/supabase'; // Βεβαιωθείτε ότι το path είναι σωστό
+import { DayCode, Market } from '../../types'; // Βεβαιωθείτε ότι το path είναι σωστό
 
 interface DayConfig {
   code: DayCode;
@@ -24,6 +24,8 @@ const DAYS_CONFIG: DayConfig[] = [
 
 export const MarketArray = () => {
   const [mounted, setMounted] = useState(false);
+  const [markets, setMarkets] = useState<Market[]>([]);
+  const [loading, setLoading] = useState(true);
   const [todayCode, setTodayCode] = useState<DayCode>('mon');
   const [todayLabel, setTodayLabel] = useState<string>('');
   const [selectedFilter, setSelectedFilter] = useState<string>('today');
@@ -35,15 +37,52 @@ export const MarketArray = () => {
     
     setTodayCode(currentDayObj.code);
     setTodayLabel(currentDayObj.label);
+
+    fetchMarkets();
   }, []);
 
+  const fetchMarkets = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('markets')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (!error && data) {
+        const formattedMarkets: Market[] = data.map((m) => ({
+          id: m.id,
+          dayCode: m.day_code,
+          day: m.day,
+          locationName: m.location_name,
+          address: m.address,
+          hours: m.hours,
+          standInfo: m.stand_info,
+          isOrganicOnly: m.is_organic_only,
+          googleMapsUrl: m.google_maps_url,
+          isActive: m.is_active,
+        }));
+        setMarkets(formattedMarkets);
+      }
+    } catch (err) {
+      console.error('Error fetching markets:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!mounted) {
-    return null; // Aims to prevent hydration mismatch on initial render
+    return null; // Αποφυγή hydration mismatch
   }
 
-  const todayMarket = MOCK_MARKETS.find((m) => m.dayCode === todayCode);
+  // Μόνο οι ενεργές λαϊκές
+  const activeMarkets = markets.filter((m) => m.isActive);
 
-  const displayedMarkets = MOCK_MARKETS.filter((market) => {
+  // Σημερινή λαϊκή (αν είναι ενεργή)
+  const todayMarket = activeMarkets.find((m) => m.dayCode === todayCode);
+
+  // Φιλτράρισμα προβαλλόμενων αγορών
+  const displayedMarkets = activeMarkets.filter((market) => {
     if (selectedFilter === 'today') return market.dayCode === todayCode;
     if (selectedFilter === 'all') return true;
     return market.dayCode === selectedFilter;
@@ -78,18 +117,20 @@ export const MarketArray = () => {
           transition={{ duration: 0.5 }}
           className="mb-12 bg-[#1E2C22] text-[#FAF7F2] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-white/10"
         >
-          {/* Ambient Glow & Background Decor */}
           <div className="absolute -right-16 -top-16 w-72 h-72 bg-[#E8A838]/20 rounded-full blur-3xl pointer-events-none" />
           
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
             <div className="space-y-3 max-w-2xl">
-              {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#C86D51] text-white rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
                 <span className="w-2 h-2 rounded-full bg-[#E8A838] animate-pulse" />
                 Σήμερα: {todayLabel}
               </div>
 
-              {todayMarket ? (
+              {loading ? (
+                <div className="py-4 text-white/70 text-sm animate-pulse">
+                  Φόρτωση προγράμματος...
+                </div>
+              ) : todayMarket ? (
                 <>
                   <h3 className="font-serif text-2xl sm:text-4xl font-bold text-white leading-snug">
                     {todayMarket.locationName}
@@ -141,7 +182,6 @@ export const MarketArray = () => {
         {/* CONTROLS & FILTER TABS */}
         <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-4 mb-8 no-scrollbar gap-2">
           <div className="flex items-center bg-white p-1.5 rounded-2xl shadow-sm border border-[#2D4030]/10 shrink-0">
-            {/* Today Filter Button */}
             <button
               onClick={() => setSelectedFilter('today')}
               className={`relative px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 flex items-center gap-2 ${
@@ -154,7 +194,6 @@ export const MarketArray = () => {
               Σήμερα ({todayLabel})
             </button>
 
-            {/* All Days Button */}
             <button
               onClick={() => setSelectedFilter('all')}
               className={`relative px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 ${
@@ -163,12 +202,9 @@ export const MarketArray = () => {
                   : 'text-[#2D4030]/70 hover:text-[#2D4030]'
               }`}
             >
-              Όλη η Εβδομάδα ({MOCK_MARKETS.length})
+              Όλη η Εβδομάδα ({activeMarkets.length})
             </button>
           </div>
-
-          <div className="h-6 w-px bg-[#2D4030]/15 mx-1 hidden sm:block shrink-0" />
-      
         </div>
 
         {/* BENTO CARDS GRID */}
@@ -181,7 +217,11 @@ export const MarketArray = () => {
             transition={{ duration: 0.25 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {displayedMarkets.length === 0 ? (
+            {loading ? (
+              <div className="col-span-full text-center py-16 text-[#2D4030]/60 font-medium">
+                Φόρτωση δεδομένων...
+              </div>
+            ) : displayedMarkets.length === 0 ? (
               <div className="col-span-full text-center py-16 bg-white/80 rounded-3xl border border-[#2D4030]/10 shadow-sm">
                 <p className="text-4xl mb-3">🧺</p>
                 <h4 className="font-serif text-xl font-bold text-[#2D4030]">
@@ -208,7 +248,6 @@ export const MarketArray = () => {
                     }`}
                   >
                     <div>
-                      {/* Top Bar inside Card */}
                       <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#2D4030]/10">
                         <div className="flex items-center gap-2">
                           <span className="font-serif text-2xl font-black text-[#2D4030]">
@@ -233,7 +272,6 @@ export const MarketArray = () => {
                         )}
                       </div>
 
-                      {/* Info */}
                       <div className="space-y-2 mb-6">
                         <h4 className="font-serif text-xl font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors">
                           {market.locationName}
@@ -245,7 +283,6 @@ export const MarketArray = () => {
                       </div>
                     </div>
 
-                    {/* Bottom Action Row */}
                     <div className="pt-4 border-t border-[#2D4030]/10 flex items-center justify-between gap-2">
                       <div>
                         <span className="text-[10px] font-bold uppercase text-[#2D4030]/40 block tracking-wider">

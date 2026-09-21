@@ -1,21 +1,64 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ProductCard } from '../products/ProductCard';
-import { MOCK_PRODUCTS } from '../../data/mockProducts';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase'; // Προσαρμόστε το path του supabase client
+import { Product } from '@/types'; // Προσαρμόστε το path των Types σας
 
 export const SeasonalProducts = () => {
-  // Φιλτράρισμα προϊόντων: Μόνο τα διαθέσιμα εποχιακά προϊόντα
-  const availableSeasonalProducts = MOCK_PRODUCTS.filter(
-    (product) => product.isAvailable && (product.isAvailable ?? true)
-  ).slice(0, 4); // Προβολή των πρώτων 4 στην αρχική σελίδα
+  const [seasonalProducts, setSeasonalProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchSeasonalProducts = async () => {
+      try {
+        setIsLoading(true);
+
+        // Ανάκτηση όλων των προϊόντων από τη βάση
+        const { data, error } = await supabase
+          .from('products')
+          .select('*');
+
+        if (error) {
+          console.error('Σφάλμα κατά την ανάκτηση προϊόντων:', error);
+          return;
+        }
+
+        if (data) {
+          // Μετατροπή με (item: any) για να αποφύγουμε TypeScript errors
+          const formattedProducts: Product[] = data.map((item: any) => ({
+            id: String(item.id),
+            title: item.title || '',
+            description: item.description || '',
+            imageUrl: item.image_url || item.imageUrl || '',
+            isAvailable: Boolean(item.is_available ?? item.isAvailable ?? false),
+            category: item.category || '',
+            season: item.season || '',
+          }));
+
+          // 🎯 ΑΥΣΤΗΡΟ ΦΙΛΤΡΑΡΙΣΜΑ: Κρατάμε ΜΟΝΟ τα διαθέσιμα (isAvailable === true) & έως 4 προϊόντα
+          const availableOnly = formattedProducts
+            .filter((product) => product.isAvailable === true)
+            .slice(0, 4);
+
+          setSeasonalProducts(availableOnly);
+        }
+      } catch (err) {
+        console.error('Απρόσμενο σφάλμα:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSeasonalProducts();
+  }, []);
 
   return (
-    <section className="py-24 lg:py-32 bg-gradient-to-b from-[#18231A] via-[#233326] to-[#18231A] text-[#FAF7F2] relative overflow-hidden">
+    <section className="py-24 lg:py-32 bg-linear-to-b from-[#18231A] via-[#233326] to-[#18231A] text-[#FAF7F2] relative overflow-hidden">
       {/* Decorative Ambient Lighting & Glow Spheres */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#E8A838]/10 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-175 h-87.5 bg-[#E8A838]/10 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute top-10 right-10 w-96 h-96 bg-[#C86D51]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#2D4030]/20 rounded-full blur-3xl pointer-events-none" />
 
@@ -48,10 +91,29 @@ export const SeasonalProducts = () => {
           </Link>
         </div>
 
-        {/* Product Cards Grid */}
-        {availableSeasonalProducts.length > 0 ? (
+        {/* Product Cards Grid / Skeleton / Fallback */}
+        {isLoading ? (
+          /* Loading Skeletons */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {availableSeasonalProducts.map((product, idx) => (
+            {[...Array(4)].map((_, i) => (
+              <div 
+                key={i} 
+                className="h-[380px] rounded-3xl bg-white/5 border border-white/10 animate-pulse p-4 flex flex-col justify-between"
+              >
+                <div className="w-full h-52 bg-white/10 rounded-2xl" />
+                <div className="space-y-3 my-4">
+                  <div className="h-5 bg-[#white]/10 rounded-md w-3/4" />
+                  <div className="h-3 bg-white/10 rounded-md w-full" />
+                  <div className="h-3 bg-white/10 rounded-md w-2/3" />
+                </div>
+                <div className="h-8 bg-white/10 rounded-xl w-full" />
+              </div>
+            ))}
+          </div>
+        ) : seasonalProducts.length > 0 ? (
+          /* Real Available Products Grid */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {seasonalProducts.map((product, idx) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -83,7 +145,7 @@ export const SeasonalProducts = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-16 p-6 sm:p-8 bg-gradient-to-r from-[#C86D51] via-[#b85e43] to-[#A34B32] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
+          className="mt-16 p-6 sm:p-8 bg-linear-to-r from-[#C86D51] via-[#b85e43] to-[#A34B32] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
         >
           {/* Ambient Glow */}
           <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-[#E8A838]/20 rounded-full blur-2xl pointer-events-none" />

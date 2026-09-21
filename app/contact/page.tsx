@@ -1,24 +1,22 @@
-// app/contact/page.tsx
-import React from 'react';
-import { ContactInfo } from '../../components/contact/ContactInfo';
-import { InquiryForm } from '../../components/contact/InquiryForm';
+import { FlashCards } from '@/components/contact/FlashCards';
+import { ContactInfo } from '@/components/contact/ContactInfo';
 
 export default function ContactPage() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <h1 className="font-serif text-4xl font-bold text-[#2D4030] mb-3">
-          Επικοινωνήστε Μαζί μας
-        </h1>
-        <p className="text-[#2D4030]/80">
-          Έχετε απορίες για τα προϊόντα ή θέλετε να επισκεφθείτε τη φάρμα μας; Θα χαρούμε να σας εξυπηρετήσουμε.
+    <main className="min-h-screen bg-[#FAF7F2]">
+      {/* Header Banner */}
+      <section className="py-16 bg-[#2D4030] text-[#FAF7F2] text-center border-b border-white/10">
+        <h1 className="font-serif text-4xl sm:text-6xl font-black">Επικοινωνία</h1>
+        <p className="text-sm text-[#FAF7F2]/80 mt-3 font-light max-w-md mx-auto">
+          Θέλετε να μάθετε περισσότερα για τους καρπούς μας ή τη φάρμα μας; Στείλτε μας το μήνυμά σας.
         </p>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-        <ContactInfo />
-        <InquiryForm />
-      </div>
-    </div>
+      {/* Component 1: Interactive Flashcard Form */}
+      <FlashCards />
+
+      {/* Component 2: Direct Contact Information */}
+      <ContactInfo />
+    </main>
   );
 }
