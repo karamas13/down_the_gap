@@ -34,7 +34,7 @@ export const Navbar = () => {
 
   return (
     <header
-      className={`relative top-0 z-50 transition-all duration-300 backdrop-blur-md bg-[#FAF7F2]/90 border-b ${
+      className={`relative top-0 z-50 transition-all duration-300 backdrop-blur-md bg-[#FAF7F2]/90 border-b py-2 ${
         scrolled ? 'border-[#2D4030]/15 shadow-sm' : 'border-[#2D4030]/10'
       }`}
     >

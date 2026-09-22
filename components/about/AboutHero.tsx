@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import  PepperBackround  from "@/public/images/PepperBackground.avif"
+
 
 export const AboutHero = () => {
   return (
@@ -11,11 +11,11 @@ export const AboutHero = () => {
       {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 z-0 opacity-40 h-screen">
         <Image
-          src={ PepperBackround }
+          src="/images/PepperBackground.avif"
           alt="DownTheGap Organic Farm"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-center pointer-events-none"
         />
         <div className="absolute inset-0 bg-linear-to-t via-[#2D4030]/60 to-transparent" />
       </div>
