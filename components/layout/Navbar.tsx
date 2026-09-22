@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -27,7 +28,7 @@ export const Navbar = () => {
   const navLinks = [
     { href: '/', label: 'Αρχική' },
     { href: '/about', label: 'Σχετικά με εμάς' },
-    { href: '/products', label: 'Φάρμα & Προϊόντα' },
+    { href: '/products', label: 'Προϊόντα' },
     { href: '/contact', label: 'Επικοινωνία' },
   ];
 
@@ -37,18 +38,26 @@ export const Navbar = () => {
         scrolled ? 'border-[#2D4030]/15 shadow-sm' : 'border-[#2D4030]/10'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-25 flex items-center justify-between">
         
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <span className="text-xl">🌱</span>
-          <span className="font-serif text-2xl font-black tracking-tight text-[#2D4030] group-hover:text-[#C86D51] transition-colors">
-            DownTheGap
-          </span>
+        {/* Full Brand Logo - Crisp & High Resolution for Mobile/Retina */}
+        <Link href="/" className="flex items-center h-full py-1 group">
+          <div className="relative h-60 sm:h-70 w-auto flex items-center justify-center">
+            <Image
+              src="/images/MainLogo.avif"
+              alt="DownTheGap Logo"
+              width={600}
+              height={200}
+              quality={100}
+              priority
+              sizes="(max-width: 768px) 240px, 320px"
+              className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 font-medium text-sm text-[#2D4030]">
+        <nav className="hidden md:flex items-center gap-8 font-medium text-md text-[#2D4030]">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -118,8 +127,6 @@ export const Navbar = () => {
                   </Link>
                 );
               })}
-
-             
             </div>
           </motion.div>
         )}

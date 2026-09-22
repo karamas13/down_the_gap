@@ -28,7 +28,7 @@ export const HeroSection = () => {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E8A838]"></span>
             </span>
             <span className="text-[#2D4030] font-semibold text-xs sm:text-sm tracking-wide uppercase">
-              Αυθεντική Παράδοση 3 Γενεών
+              ΚΑΤΩ ΑΠ' ΤΟ ΑΥΛΑΚΙ 
             </span>
           </div>
 
@@ -77,7 +77,7 @@ export const HeroSection = () => {
             </div>
             <div>
               <p className="font-serif text-2xl sm:text-3xl font-bold text-[#C86D51]">
-                <AnimatedCounter from={1900} to={1954} duration={2} />
+                <AnimatedCounter from={1900} to={1980} duration={2} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium">Έτος Ίδρυσης</p>
             </div>
@@ -98,10 +98,10 @@ export const HeroSection = () => {
           className="lg:col-span-5 relative mt-6 lg:mt-0"
         >
           {/* Main Cinematic Image Frame */}
-          <div className="relative h-[480px] sm:h-[560px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
+          <div className="relative h-120 sm:h-140 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
             <Image
-              src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80"
-              alt="Οικογένεια στη φάρμα DownTheGap"
+              src="/images/kalampoki4.avif"
+              alt="Καλλιέργεια Καλαμποκιού"
               fill
               className="object-cover scale-105 hover:scale-100 transition-transform duration-700 ease-out"
               priority

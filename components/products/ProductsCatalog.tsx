@@ -18,7 +18,7 @@ const SEASON_CONFIG = {
     bgGlow: 'from-[#2D4030]/10 via-[#FAF7F2] to-[#FAF7F2]',
     badgeBg: 'bg-[#2D4030]/10 text-[#2D4030]',
     border: 'border-[#2D4030]/20',
-    bannerTitle: 'Όλη η Σοδειά της Φάρμας',
+    bannerTitle: 'Όλη η Σοδειά μας',
     bannerDesc: 'Ανακαλύψτε το σύνολο των φρέσκων λαχανικών μας, καλλιεργημένων με απόλυτο σεβασμό στον κύκλο της φύσης.',
     icon: '🌿',
   },
@@ -117,7 +117,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
   };
 
   return (
-    <section className={`relative py-20 transition-colors duration-700 bg-gradient-to-b ${currentTheme.bgGlow} text-[#2D4030]`}>
+    <section className={`relative py-20 transition-colors duration-700 bg-linear-to-b ${currentTheme.bgGlow} text-[#2D4030]`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Seasonal Banner */}

@@ -450,7 +450,7 @@ export const ProductManager = () => {
                 ) : editingProductId ? (
                   'Ενημέρωση Προϊόντος'
                 ) : (
-                  '+ Προσθήκη Στη Φάρμα'
+                  '+ Προσθήκη Προϊόντος'
                 )}
               </button>
               {editingProductId && (

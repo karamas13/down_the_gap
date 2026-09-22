@@ -93,7 +93,7 @@ export const CoreValues = () => {
               className="group relative h-full bg-white p-7 sm:p-8 rounded-3xl border border-[#2D4030]/10 shadow-sm hover:shadow-xl hover:border-[#C86D51]/30 transition-all duration-300 flex flex-col justify-between overflow-hidden"
             >
               {/* Subtle Top Accent Line on Hover */}
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#2D4030] to-[#C86D51] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-[#2D4030] to-[#C86D51] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div>
                 {/* Header Row: Icon & Tag */}

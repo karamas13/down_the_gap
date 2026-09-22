@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -15,66 +16,109 @@ interface GalleryItem {
 const galleryImages: GalleryItem[] = [
   {
     id: 1,
-    src: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Πρωινή συγκομιδή',
-    title: 'Πρωινή Συγκομιδή',
-    caption: 'Μαζεύοντας τους καρπούς με την πρώτη δροσιά του πρωινού.',
+    src: '/images/tomatesextra.avif',
+    alt: 'Άγουρη Τομάτα',
+    title: 'Άγουρη Τομάτα',
+    caption: 'Άγουρος καρπός τομάτας',
   },
   {
     id: 2,
-    src: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb23659?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Φρέσκα λαχανικά',
-    title: 'Αγνά Βιολογικά Προϊόντα',
-    caption: 'Φρέσκα λαχανικά χωρίς χημικά φίλτρα & επεξεργασία.',
-  },
-  {
-    id: 3,
-    src: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Το κτήμα μας',
-    title: 'Το Φυσικό Κτήμα',
+    src: '/images/laxano1.avif',
+    alt: 'Λάχανο',
+    title: 'Καλλιέργεια Λαχάνων',
     caption: 'Ένα ζωντανό οικοσύστημα καλλιέργειας με σεβασμό στο έδαφος.',
   },
   {
+    id: 3,
+    src: '/images/laxano3.avif',
+    alt: 'Λάχανο',
+    title: 'Φρέσκο Λάχανο',
+    caption: 'Φρέσκο Λάχανο πρίν την συγκομιδή.',
+  },
+  {
     id: 4,
-    src: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Προετοιμασία τελάρων',
-    title: 'Προετοιμασία για τη Λαϊκή',
+    src: '/images/fill8.avif',
+    alt: 'Πάγκος Λαϊκής',
+    title: 'Ποικιλία φρέσκων προϊόντων',
     caption: 'Προσεκτική διαλογή και τοποθέτηση την ίδια ημέρα συγκομιδής.',
   },
   {
     id: 5,
-    src: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Στατάρια & Χωράφια',
-    title: 'Χρυσές Καλλιέργειες',
-    caption: 'Παραδοσιακές τεχνικές φροντίδας και αμειψισποράς.',
+    src: '/images/fill2.avif',
+    alt: 'Πάγκος Λαϊκής',
+    title: 'Ο Πάγκος μας',
+    caption: 'Ένα συνονθύλευμα χρωμάτων και γεύσεων.',
   },
   {
     id: 6,
-    src: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Φρέσκες ντομάτες',
-    title: 'Ντομάτες Εποχής',
-    caption: 'Γεμάτη γεύση και άρωμα κατευθείαν από το μποστάνι.',
+    src: '/images/tomates2.avif',
+    alt: 'Φυτό Τομάτας',
+    title: 'Φυτό Τομάτας',
+    caption: 'Παραδοσιακές τεχνικές φροντίδας και αμειψισποράς.',
   },
   {
     id: 7,
-    src: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Πατάτες & Ρίζες',
-    title: 'Καρποί της Γης',
+    src: '/images/kounoupidi4.avif',
+    alt: 'Κουνουπίδι',
+    title: 'Φρέσκο Κουνουπίδι',
     caption: 'Φυσική συλλογή χωρίς συνθετικά λιπάσματα.',
   },
   {
     id: 8,
-    src: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Πάγκος στη λαϊκή',
-    title: 'Στον Πάγκο μας',
-    caption: 'Άμεση επαφή και συζήτηση με τους καταναλωτές κάθε εβδομάδα.',
+    src: '/images/melitzanes4.avif',
+    alt: 'Μελιτζάνα',
+    title: 'Φρέσκια Μελιτζάνα',
+    caption: 'Φρέσκια μελιτζάνα πρίν την συγκομιδή.',
+  },
+  {
+    id: 9,
+    src: '/images/Ellies2.avif',
+    alt: 'Ελλιά',
+    title: 'Δέντρο Ελλιάς',
+    caption: 'Δέντρο Ελλιάς στο κτήμα μας.',
+  },
+  {
+    id: 10,
+    src: '/images/piperies3.avif',
+    alt: 'Πιπεριές',
+    title: 'Φρέσκες Πιπεριές',
+    caption: 'Φρέσκια πιπεριά πρίν την συγκομιδή.',
   },
 ];
 
 export const AboutGallery = () => {
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // Πλοήγηση στο Lightbox
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Κλείδωμα Scroll
+  useEffect(() => {
+    if (activeImageIndex !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [activeImageIndex]);
+
+  // Πλοήγηση με πληκτρολόγιο
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeImageIndex === null) return;
+      if (e.key === 'Escape') setActiveImageIndex(null);
+      if (e.key === 'ArrowRight') handleNextImage();
+      if (e.key === 'ArrowLeft') handlePrevImage();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeImageIndex]);
+
   const handleNextImage = () => {
     if (activeImageIndex !== null) {
       setActiveImageIndex((activeImageIndex + 1) % galleryImages.length);
@@ -97,7 +141,7 @@ export const AboutGallery = () => {
             Φωτογραφικό Υλικό
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-black text-[#2D4030]">
-            Μια Ημέρα στη Φάρμα
+            Μια Ημέρα στο Κτήμα
           </h2>
           <p className="text-sm sm:text-base text-[#2D4030]/75 max-w-xl mt-3 leading-relaxed">
             Στιγμιότυπα από την καθημερινή μας ενασχόληση με τη γη, τη φροντίδα των καλλιεργειών και την προετοιμασία της συγκομιδής.
@@ -116,7 +160,6 @@ export const AboutGallery = () => {
               onClick={() => setActiveImageIndex(idx)}
               className="break-inside-avoid group cursor-pointer"
             >
-              {/* Clean Image Container */}
               <div className="relative w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 border border-[#2D4030]/10 shadow-sm group-hover:shadow-md transition-all duration-300">
                 <Image
                   src={img.src}
@@ -128,7 +171,6 @@ export const AboutGallery = () => {
                 />
               </div>
 
-              {/* Text Below Image */}
               <div className="mt-3 px-1">
                 <h3 className="font-serif text-lg font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors">
                   {img.title}
@@ -143,89 +185,109 @@ export const AboutGallery = () => {
 
       </div>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {activeImageIndex !== null && galleryImages[activeImageIndex] && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8"
-            onClick={() => setActiveImageIndex(null)}
-          >
-            {/* Modal Box */}
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-5xl w-full bg-[#1A261C] rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col md:flex-row"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setActiveImageIndex(null)}
-                className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-black/50 text-white hover:bg-white hover:text-black transition-colors"
-                aria-label="Κλείσιμο"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              {/* Full Image Container */}
-              <div className="relative w-full md:w-3/5 h-[350px] sm:h-[500px]">
-                <Image
-                  src={galleryImages[activeImageIndex].src}
-                  alt={galleryImages[activeImageIndex].alt}
-                  fill
-                  className="object-cover"
+      {/* MODERN FULLSCREEN LIGHTBOX MODAL */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {activeImageIndex !== null && galleryImages[activeImageIndex] && (
+              <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+                
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => setActiveImageIndex(null)}
+                  className="fixed inset-0 bg-black/92 backdrop-blur-lg"
                 />
-              </div>
 
-              {/* Sidebar Info */}
-              <div className="p-6 sm:p-8 w-full md:w-2/5 flex flex-col justify-between text-[#FAF7F2]">
-                <div> 
-                  <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-3">
-                    {galleryImages[activeImageIndex].title}
-                  </h3>
-                  <p className="text-sm text-[#FAF7F2]/80 leading-relaxed font-light">
-                    {galleryImages[activeImageIndex].caption}
-                  </p>
-                </div>
+                {/* Close Button Top Right */}
+                <button
+                  onClick={() => setActiveImageIndex(null)}
+                  className="fixed top-5 right-5 z-50 p-3 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-all border border-white/10 shadow-lg"
+                  aria-label="Κλείσιμο"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
 
-                {/* Modal Navigation Controls */}
-                <div className="pt-6 border-t border-white/10 flex items-center justify-between mt-6">
-                  <span className="text-xs text-white/50 font-mono">
+                {/* Main Lightbox Content */}
+                <div className="relative w-full h-full flex flex-col items-center justify-between p-4 sm:p-8 z-10 pointer-events-none">
+                  
+                  {/* Top Counter */}
+                  <div className="pointer-events-auto mt-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-white/80 text-xs font-mono border border-white/10">
                     {activeImageIndex + 1} / {galleryImages.length}
-                  </span>
+                  </div>
 
-                  <div className="flex gap-2">
+                  {/* Image Display Area */}
+                  <div className="relative w-full flex-1 max-w-6xl my-4 flex items-center justify-center pointer-events-auto">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeImageIndex}
+                        initial={{ opacity: 0, scale: 0.96 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.96 }}
+                        transition={{ duration: 0.2 }}
+                        className="relative w-full h-full max-h-[75vh] flex items-center justify-center"
+                      >
+                        <Image
+                          src={galleryImages[activeImageIndex].src}
+                          alt={galleryImages[activeImageIndex].alt}
+                          fill
+                          priority
+                          sizes="100vw"
+                          className="object-contain"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation Arrows */}
                     <button
                       onClick={handlePrevImage}
-                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-white"
-                      aria-label="Προηγούμενη εικόνα"
+                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl"
+                      aria-label="Προηγούμενη"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
                       </svg>
                     </button>
+
                     <button
                       onClick={handleNextImage}
-                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-white"
-                      aria-label="Επόμενη εικόνα"
+                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl"
+                      aria-label="Επόμενη"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                       </svg>
                     </button>
                   </div>
-                </div>
-              </div>
 
-            </motion.div>
-          </motion.div>
+                  {/* Floating Bottom Info Card */}
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="pointer-events-auto max-w-xl w-full bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 text-center text-white shadow-2xl mb-2"
+                  >
+                    <h3 className="font-serif text-lg sm:text-xl font-bold">
+                      {galleryImages[activeImageIndex].title}
+                    </h3>
+                    {galleryImages[activeImageIndex].caption && (
+                      <p className="text-xs sm:text-sm text-white/80 font-light mt-1 leading-relaxed">
+                        {galleryImages[activeImageIndex].caption}
+                      </p>
+                    )}
+                  </motion.div>
+
+                </div>
+
+              </div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 };

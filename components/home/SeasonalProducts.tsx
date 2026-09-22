@@ -98,7 +98,7 @@ export const SeasonalProducts = () => {
             {[...Array(4)].map((_, i) => (
               <div 
                 key={i} 
-                className="h-[380px] rounded-3xl bg-white/5 border border-white/10 animate-pulse p-4 flex flex-col justify-between"
+                className="h-95 rounded-3xl bg-white/5 border border-white/10 animate-pulse p-4 flex flex-col justify-between"
               >
                 <div className="w-full h-52 bg-white/10 rounded-2xl" />
                 <div className="space-y-3 my-4">

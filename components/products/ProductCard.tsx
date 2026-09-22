@@ -69,11 +69,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               className={`object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
-                !isAvailable ? 'grayscale-[30%] opacity-80' : ''
+                !isAvailable ? 'grayscale-30 opacity-80' : ''
               }`}
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/10 pointer-events-none" />
 
             <div className="absolute top-3 inset-x-3 z-10 flex items-center justify-between gap-2 pointer-events-none">
               <div className="pointer-events-auto shrink-0">
@@ -88,13 +88,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 ) : (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#1E2C22]/85 backdrop-blur-md text-[#FAF7F2] text-[11px] font-bold rounded-full shadow-md border border-white/10">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                    Εκτός Εποχής
+                    Μη Διαθέσιμο
                   </span>
                 )}
               </div>
 
               {category && (
-                <span className="pointer-events-auto truncate max-w-[110px] px-2.5 py-1 bg-[#1E2C22]/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded-lg border border-white/10 shadow-sm">
+                <span className="pointer-events-auto truncate max-w-27.5 px-2.5 py-1 bg-[#1E2C22]/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded-lg border border-white/10 shadow-sm">
                   {category}
                 </span>
               )}
@@ -106,7 +106,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {title}
             </h3>
 
-            <p className="text-xs text-[#2D4030]/70 leading-relaxed font-sans line-clamp-2 min-h-[2.25rem]">
+            <p className="text-xs text-[#2D4030]/70 leading-relaxed font-sans line-clamp-2 min-h-9">
               {description}
             </p>
           </div>
@@ -137,7 +137,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         createPortal(
           <AnimatePresence>
             {isOpen && (
-              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-y-auto">
+              <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-y-auto">
                 {/* BACKDROP */}
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -170,7 +170,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
                     
                     {/* LARGE IMAGE COLUMN (5 cols on lg) */}
-                    <div className="lg:col-span-5 relative h-72 sm:h-96 lg:h-full min-h-[280px] sm:min-h-[360px] w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 shrink-0 shadow-sm border border-[#2D4030]/10">
+                    <div className="lg:col-span-5 relative h-72 sm:h-96 lg:h-full min-h-70 sm:min-h-90 w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 shrink-0 shadow-sm border border-[#2D4030]/10">
                       <Image
                         src={displayImage}
                         alt={title || 'Προϊόν Φάρμας'}
@@ -181,7 +181,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                       />
 
                       {/* Dark Gradient Overlay for Badges */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
 
                       {/* Top Badges over Image */}
                       <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5">
@@ -215,7 +215,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                           ) : (
                             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold rounded-full">
                               <span className="w-2 h-2 rounded-full bg-amber-500" />
-                              Εκτός Εποχής / Αναμένεται Σοδειά
+                              Μη Διαθέσιμο / Αναμένεται Σοδειά
                             </span>
                           )}
                         </div>
@@ -265,10 +265,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                         <div className="flex items-center gap-3">
                           <a
-                            href="/markets"
+                            href="/products"
                             className="flex-1 py-3.5 bg-[#2D4030] hover:bg-[#C86D51] text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all text-center shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                           >
-                            <span>📍 Βρείτε μας στη Λαϊκή</span>
+                            <span>Δείτε όλα τα Προϊόντα</span>
                             <span>→</span>
                           </a>
                           <button

@@ -1,16 +1,29 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 export const ProductHero = () => {
   return (
-    <section className="relative bg-[#2D4030] text-[#FAF7F2] py-20 lg:py-28 overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-[#2D4030] text-[#FAF7F2] py-20 lg:py-28 overflow-hidden">
+      {/* Background Image */}
+      <Image
+        src="/images/fill3.avif"
+        alt="Product Hero Background"
+        fill
+        priority
+        className="object-cover object-center pointer-events-none"
+      />
+
+      {/* Dark & Earthy Overlay for Text Contrast */}
+      <div className="absolute inset-0 bg-[#2D4030]/70 bg-linear-to-t via-[#2D4030]/10 to-[#2D4030]/10 pointer-events-none" />
+
       {/* Background Decorative Blur Orbs */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#C86D51]/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#E8A838]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Main Text & Headlines */}
@@ -19,7 +32,7 @@ export const ProductHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-extrabold uppercase tracking-widest text-[#E8A838]"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-extrabold uppercase tracking-widest text-[#E8A838]"
             >
               <span>🌾</span>
               <span>100% Φυσική Καλλιέργεια</span>
@@ -40,7 +53,7 @@ export const ProductHero = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-base sm:text-lg text-[#FAF7F2]/80 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
             >
-              Στη φάρμα μας δεν πιέζουμε τη φύση. Καλλιεργούμε αποκλειστικά στην ώρα τους θερινούς και χειμερινούς καρπούς, προσφέροντάς σας αυθεντική γεύση και μέγιστη θρεπτική αξία.
+              Στα κτήματα μας δεν πιέζουμε τη φύση. Καλλιεργούμε αποκλειστικά στην ώρα τους θερινούς και χειμερινούς καρπούς, προσφέροντάς σας αυθεντική γεύση και μέγιστη θρεπτική αξία.
             </motion.p>
 
             {/* Quick Stats Grid */}
@@ -96,7 +109,7 @@ export const ProductHero = () => {
               <div>
                 <h3 className="font-serif text-lg font-bold">Χειμερινή Σοδειά</h3>
                 <p className="text-xs text-[#FAF7F2]/75 mt-1 leading-relaxed">
-                  Πλούσια μπρόκολα, τραγανά κουνουπίδια, φρέσκο σπανάκι και εσπεριδοειδή γεμάτα βιταμίνες.
+                  Πλούσια μπρόκολα, τραγανά κουνουπίδια, κρεμμυδάκι φρέσκο και εσπεριδοειδή γεμάτα βιταμίνες.
                 </p>
               </div>
             </motion.div>
