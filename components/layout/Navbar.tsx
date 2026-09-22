@@ -38,11 +38,11 @@ export const Navbar = () => {
         scrolled ? 'border-[#2D4030]/15 shadow-sm' : 'border-[#2D4030]/10'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-25 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
         
-        {/* Full Brand Logo - Crisp & High Resolution for Mobile/Retina */}
-        <Link href="/" className="flex items-center h-full py-1 group">
-          <div className="relative h-60 sm:h-70 w-auto flex items-center justify-center">
+        {/* Brand Logo - Correctly Sized & Sharp */}
+        <Link href="/" className="flex items-center group shrink-0 py-2">
+          <div className="relative w-40 sm:w-52">
             <Image
               src="/images/MainLogo.avif"
               alt="DownTheGap Logo"
@@ -50,8 +50,8 @@ export const Navbar = () => {
               height={200}
               quality={100}
               priority
-              sizes="(max-width: 768px) 240px, 320px"
-              className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 640px) 160px, 208px"
+              className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </div>
         </Link>
