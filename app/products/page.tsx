@@ -1,4 +1,3 @@
-import { MOCK_PRODUCTS } from '@/data/mockProducts';
 import { ProductHero } from '../../components/products/ProductHero';
 import { ProductsCatalog } from '@/components/products/ProductsCatalog';
 
