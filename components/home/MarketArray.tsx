@@ -40,7 +40,6 @@ export const MarketArray = () => {
     fetchMarkets();
   }, []);
 
-  // Ακριβές Scroll μόλις φορτώσουν τα data από το Supabase
   useEffect(() => {
     if (!loading && window.location.hash === '#marketarray') {
       const element = document.getElementById('marketarray');
@@ -92,26 +91,55 @@ export const MarketArray = () => {
   return (
     <section 
       id="marketarray" 
-      className="scroll-mt-28 py-20 lg:py-28 bg-[#FAF7F2] text-[#2D4030] relative overflow-hidden"
+      className="scroll-mt-28 py-20 lg:py-28 bg-linear-to-br from-[#f5e1b8] via-[#f0debf] to-[#E2E8DF] text-[#2D4030] relative overflow-hidden"
     >
-      <div className="absolute top-0 right-10 w-96 h-96 bg-[#E8A838]/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#C86D51]/10 rounded-full blur-3xl pointer-events-none" />
+      {/* --- DESIGN FLARE LAYERS --- */}
+
+      {/* Subtle Micro-Grid Overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h32v32H0V0zm1 1h30v30H1V1z' fill='%232D4030' fill-opacity='1'/%3E%3C/svg%3E")`
+        }}
+      />
+
+      {/* Organic Dynamic Mesh Orbs */}
+      <motion.div 
+        animate={{ 
+          x: [0, 40, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.15, 1] 
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -top-20 -left-20 w-137.5 h-137.5 bg-radial from-[#E8A838]/25 via-[#E8A838]/0 to-transparent rounded-full blur-[100px] pointer-events-none" 
+      />
+      <motion.div 
+        animate={{ 
+          x: [0, -50, 0],
+          y: [0, 40, 0],
+          scale: [1, 1.2, 1] 
+        }}
+        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className="absolute -bottom-20 -right-20 w-150 h-150 bg-radial from-[#C86D51]/20 via-[#C86D51]/0 to-transparent rounded-full blur-[110px] pointer-events-none" 
+      />
+    
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#2D4030]/10 rounded-full text-xs font-extrabold uppercase tracking-widest text-[#2D4030] mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#2D4030]/10 backdrop-blur-md border border-[#2D4030]/15 rounded-full text-xs font-extrabold uppercase tracking-widest text-[#2D4030] mb-4 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#C86D51] animate-ping" />
             Πού Θα Μας Βρείτε
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight leading-tight text-[#2D4030]">
             Εβδομαδιαίο Πρόγραμμα Λαϊκών
           </h2>
-          <p className="text-base sm:text-lg text-[#2D4030]/70 mt-3 font-medium">
+          <p className="text-base sm:text-lg text-[#2D4030]/80 mt-3 font-medium">
             Φρέσκα λαχανικά κατευθείαν από το κτήμα στο πόστο μας.
           </p>
         </div>
 
+        {/* Featured "Today" Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,13 +208,14 @@ export const MarketArray = () => {
           </div>
         </motion.div>
 
+        {/* Grid of Markets */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
             <div className="col-span-full text-center py-16 text-[#2D4030]/60 font-medium">
               Φόρτωση δεδομένων...
             </div>
           ) : activeMarkets.length === 0 ? (
-            <div className="col-span-full text-center py-16 bg-white/80 rounded-3xl border border-[#2D4030]/10 shadow-sm">
+            <div className="col-span-full text-center py-16 bg-white/90 backdrop-blur-md rounded-3xl border border-[#2D4030]/10 shadow-sm">
               <p className="text-4xl mb-3">🧺</p>
               <h4 className="font-serif text-xl font-bold text-[#2D4030]">
                 Δεν υπάρχουν προγραμματισμένες λαϊκές αγορές.
@@ -199,7 +228,7 @@ export const MarketArray = () => {
               return (
                 <div
                   key={market.id}
-                  className={`group relative bg-white rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
+                  className={`group relative bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
                     isToday
                       ? 'border-[#E8A838] shadow-md ring-2 ring-[#E8A838]/40'
                       : 'border-[#2D4030]/10 shadow-sm hover:border-[#2D4030]/30'
@@ -269,7 +298,8 @@ export const MarketArray = () => {
           )}
         </div>
 
-        <div className="mt-12 p-8 bg-white rounded-3xl border border-[#2D4030]/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+        {/* Contact CTA Card */}
+        <div className="mt-12 p-8 bg-white/90 backdrop-blur-md rounded-3xl border border-[#2D4030]/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-[#E8A838]/20 text-[#2D4030] flex items-center justify-center text-2xl shrink-0 font-bold">
               🧺

@@ -4,19 +4,23 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-
 export const AboutHero = () => {
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center bg-[#2D4030] text-[#FAF7F2] overflow-hidden h-screen">
-      {/* Background Image with Dark Overlay */}
-      <div className="absolute inset-0 z-0 opacity-40 h-screen">
+    <section className="relative h-screen min-h-150 flex items-center justify-center bg-[#2D4030] text-[#FAF7F2] overflow-hidden">
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0 opacity-40">
         <Image
           src="/images/PepperBackground.avif"
           alt="DownTheGap Organic Farm"
           fill
-          priority
+          priority 
+          sizes="100vw" 
+          quality={75} 
+          placeholder="blur"          
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDQwMzAiLz48L3N2Zz4="
           className="object-cover object-center pointer-events-none"
         />
+        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-linear-to-t via-[#2D4030]/60 to-transparent" />
       </div>
 

@@ -7,17 +7,24 @@ import { motion } from 'framer-motion';
 export const ProductHero = () => {
   return (
     <section className="relative min-h-screen flex items-center bg-[#2D4030] text-[#FAF7F2] py-20 lg:py-28 overflow-hidden">
-      {/* Background Image */}
-      <Image
-        src="/images/fill3.avif"
-        alt="Product Hero Background"
-        fill
-        priority
-        className="object-cover object-center pointer-events-none"
-      />
-
-      {/* Dark & Earthy Overlay for Text Contrast */}
-      <div className="absolute inset-0 bg-[#2D4030]/70 bg-linear-to-t via-[#2D4030]/10 to-[#2D4030]/10 pointer-events-none" />
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/fill3.avif"
+          alt="Product Hero Background"
+          fill
+          priority // Φορτώνει άμεσα (preloaded)
+          sizes="100vw" // Responsive μεγέθη για αποφυγή download τεράστιων assets
+          quality={75} // Βελτιστοποίηση μεγέθους αρχείου
+          placeholder="blur"
+          // Ελαφρύ SVG blur data-url για ακαριαία εμφάνιση φόντου πριν φορτώσει η εικόνα
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDQwMzAiLz48L3N2Zz4="
+          className="object-cover object-center pointer-events-none"
+        />
+        
+        {/* Dark & Earthy Overlay for Text Contrast */}
+        <div className="absolute inset-0 bg-[#2D4030]/70 bg-linear-to-t via-[#2D4030]/10 to-[#2D4030]/10 pointer-events-none" />
+      </div>
 
       {/* Background Decorative Blur Orbs */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#C86D51]/15 rounded-full blur-3xl pointer-events-none" />
