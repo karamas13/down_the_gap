@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { ProductManager } from '@/components/admin/ProductManager';
 import { MarketManager } from '@/components/admin/MarketManager';
+import { GalleryManager } from '@/components/admin/GalleryManager';
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'products' | 'markets'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'markets' | 'gallery'>('products');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function AdminDashboard() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-[#2D4030]/10 pb-4">
+        <div className="flex flex-wrap gap-4 mb-8 border-b border-[#2D4030]/10 pb-4">
           <button
             onClick={() => setActiveTab('products')}
             className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${
@@ -63,6 +64,7 @@ export default function AdminDashboard() {
           >
             Διαχείριση Προϊόντων
           </button>
+
           <button
             onClick={() => setActiveTab('markets')}
             className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${
@@ -73,10 +75,23 @@ export default function AdminDashboard() {
           >
             Πρόγραμμα Λαϊκών
           </button>
+
+          <button
+            onClick={() => setActiveTab('gallery')}
+            className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${
+              activeTab === 'gallery'
+                ? 'bg-[#2D4030] text-white shadow-sm'
+                : 'bg-white text-[#2D4030]/70 hover:bg-[#2D4030]/10'
+            }`}
+          >
+            Φωτογραφικό Υλικό (Gallery)
+          </button>
         </div>
 
         {/* Tab Content Components */}
-        {activeTab === 'products' ? <ProductManager /> : <MarketManager />}
+        {activeTab === 'products' && <ProductManager />}
+        {activeTab === 'markets' && <MarketManager />}
+        {activeTab === 'gallery' && <GalleryManager />}
       </main>
     </div>
   );

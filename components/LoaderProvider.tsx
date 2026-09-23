@@ -36,7 +36,7 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     <>
       <PageLoader
         isLoading={isLoading}
-        duration={1500}
+        duration={1700}
         onComplete={() => setIsLoading(false)}
       />
       {children}

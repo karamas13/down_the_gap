@@ -4,97 +4,51 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '@/lib/supabase'; 
 
-interface GalleryItem {
+export interface GalleryItem {
   id: number;
   src: string;
   alt: string;
   title: string;
   caption: string;
+  display_order?: number;
 }
 
-const galleryImages: GalleryItem[] = [
-  {
-    id: 1,
-    src: '/images/tomatesextra.avif',
-    alt: 'Άγουρη Τομάτα',
-    title: 'Άγουρη Τομάτα',
-    caption: 'Άγουρος καρπός τομάτας',
-  },
-  {
-    id: 2,
-    src: '/images/laxano1.avif',
-    alt: 'Λάχανο',
-    title: 'Καλλιέργεια Λαχάνων',
-    caption: 'Ένα ζωντανό οικοσύστημα καλλιέργειας με σεβασμό στο έδαφος.',
-  },
-  {
-    id: 3,
-    src: '/images/laxano3.avif',
-    alt: 'Λάχανο',
-    title: 'Φρέσκο Λάχανο',
-    caption: 'Φρέσκο Λάχανο πρίν την συγκομιδή.',
-  },
-  {
-    id: 4,
-    src: '/images/fill8.avif',
-    alt: 'Πάγκος Λαϊκής',
-    title: 'Ποικιλία φρέσκων προϊόντων',
-    caption: 'Προσεκτική διαλογή και τοποθέτηση την ίδια ημέρα συγκομιδής.',
-  },
-  {
-    id: 5,
-    src: '/images/fill2.avif',
-    alt: 'Πάγκος Λαϊκής',
-    title: 'Ο Πάγκος μας',
-    caption: 'Ένα συνονθύλευμα χρωμάτων και γεύσεων.',
-  },
-  {
-    id: 6,
-    src: '/images/tomates2.avif',
-    alt: 'Φυτό Τομάτας',
-    title: 'Φυτό Τομάτας',
-    caption: 'Παραδοσιακές τεχνικές φροντίδας και αμειψισποράς.',
-  },
-  {
-    id: 7,
-    src: '/images/kounoupidi4.avif',
-    alt: 'Κουνουπίδι',
-    title: 'Φρέσκο Κουνουπίδι',
-    caption: 'Φυσική συλλογή χωρίς συνθετικά λιπάσματα.',
-  },
-  {
-    id: 8,
-    src: '/images/melitzanes4.avif',
-    alt: 'Μελιτζάνα',
-    title: 'Φρέσκια Μελιτζάνα',
-    caption: 'Φρέσκια μελιτζάνα πρίν την συγκομιδή.',
-  },
-  {
-    id: 9,
-    src: '/images/Ellies2.avif',
-    alt: 'Ελλιά',
-    title: 'Δέντρο Ελλιάς',
-    caption: 'Δέντρο Ελλιάς στο κτήμα μας.',
-  },
-  {
-    id: 10,
-    src: '/images/piperies3.avif',
-    alt: 'Πιπεριές',
-    title: 'Φρέσκες Πιπεριές',
-    caption: 'Φρέσκια πιπεριά πρίν την συγκομιδή.',
-  },
-];
-
 export const AboutGallery = () => {
+  const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
+  
+
+  // Fetch Gallery Items from Supabase
   useEffect(() => {
     setMounted(true);
-  }, []);
 
-  // Κλείδωμα Scroll
+    const fetchGallery = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('gallery_items')
+          .select('*')
+          .order('display_order', { ascending: true })
+          .order('id', { ascending: false });
+
+        if (error) throw error;
+        if (data) setGalleryImages(data);
+      } catch (err) {
+        console.error('Error fetching gallery items:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
+  }, [supabase]);
+
+  // Lock Body Scroll
   useEffect(() => {
     if (activeImageIndex !== null) {
       document.body.style.overflow = 'hidden';
@@ -106,7 +60,7 @@ export const AboutGallery = () => {
     };
   }, [activeImageIndex]);
 
-  // Πλοήγηση με πληκτρολόγιο
+  // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (activeImageIndex === null) return;
@@ -117,16 +71,16 @@ export const AboutGallery = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeImageIndex]);
+  }, [activeImageIndex, galleryImages.length]);
 
   const handleNextImage = () => {
-    if (activeImageIndex !== null) {
+    if (activeImageIndex !== null && galleryImages.length > 0) {
       setActiveImageIndex((activeImageIndex + 1) % galleryImages.length);
     }
   };
 
   const handlePrevImage = () => {
-    if (activeImageIndex !== null) {
+    if (activeImageIndex !== null && galleryImages.length > 0) {
       setActiveImageIndex((activeImageIndex - 1 + galleryImages.length) % galleryImages.length);
     }
   };
@@ -148,44 +102,64 @@ export const AboutGallery = () => {
           </p>
         </div>
 
-        {/* Adaptive 3-Column Masonry Grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-          {galleryImages.map((img, idx) => (
-            <motion.div
-              key={img.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-              onClick={() => setActiveImageIndex(idx)}
-              className="break-inside-avoid group cursor-pointer"
-            >
-              <div className="relative w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 border border-[#2D4030]/10 shadow-sm group-hover:shadow-md transition-all duration-300">
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  width={800}
-                  height={600}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-                />
-              </div>
+        {/* Loading Skeleton */}
+        {loading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <div key={n} className="animate-pulse bg-gray-200 h-64 rounded-2xl w-full" />
+            ))}
+          </div>
+        )}
 
-              <div className="mt-3 px-1">
-                <h3 className="font-serif text-lg font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors">
-                  {img.title}
-                </h3>
-                <p className="text-xs text-[#2D4030]/75 mt-1 leading-relaxed">
-                  {img.caption}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Empty State */}
+        {!loading && galleryImages.length === 0 && (
+          <div className="text-center py-12 text-gray-500 font-sans">
+            Δεν υπάρχουν ακόμα διαθέσιμες φωτογραφίες στη συλλογή.
+          </div>
+        )}
+
+        {/* Adaptive 3-Column Masonry Grid */}
+        {!loading && galleryImages.length > 0 && (
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+            {galleryImages.map((img, idx) => (
+              <motion.div
+                key={img.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+                onClick={() => setActiveImageIndex(idx)}
+                className="break-inside-avoid group cursor-pointer"
+              >
+                <div className="relative w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 border border-[#2D4030]/10 shadow-sm group-hover:shadow-md transition-all duration-300">
+                  <Image
+                    src={img.src}
+                    alt={img.alt || img.title}
+                    width={800}
+                    height={600}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                  />
+                </div>
+
+                <div className="mt-3 px-1">
+                  <h3 className="font-serif text-lg font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors">
+                    {img.title}
+                  </h3>
+                  {img.caption && (
+                    <p className="text-xs text-[#2D4030]/75 mt-1 leading-relaxed">
+                      {img.caption}
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
       </div>
 
-      {/* MODERN FULLSCREEN LIGHTBOX MODAL */}
+      {/* LIGHTBOX MODAL */}
       {mounted &&
         createPortal(
           <AnimatePresence>
@@ -202,7 +176,7 @@ export const AboutGallery = () => {
                   className="fixed inset-0 bg-black/92 backdrop-blur-lg"
                 />
 
-                {/* Close Button Top Right */}
+                {/* Close Button */}
                 <button
                   onClick={() => setActiveImageIndex(null)}
                   className="fixed top-5 right-5 z-50 p-3 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-all border border-white/10 shadow-lg"
@@ -221,7 +195,7 @@ export const AboutGallery = () => {
                     {activeImageIndex + 1} / {galleryImages.length}
                   </div>
 
-                  {/* Image Display Area */}
+                  {/* Image Display */}
                   <div className="relative w-full flex-1 max-w-6xl my-4 flex items-center justify-center pointer-events-auto">
                     <AnimatePresence mode="wait">
                       <motion.div
@@ -234,7 +208,7 @@ export const AboutGallery = () => {
                       >
                         <Image
                           src={galleryImages[activeImageIndex].src}
-                          alt={galleryImages[activeImageIndex].alt}
+                          alt={galleryImages[activeImageIndex].alt || galleryImages[activeImageIndex].title}
                           fill
                           priority
                           sizes="100vw"
@@ -265,7 +239,7 @@ export const AboutGallery = () => {
                     </button>
                   </div>
 
-                  {/* Floating Bottom Info Card */}
+                  {/* Floating Info Card */}
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
