@@ -51,9 +51,7 @@ export const FarmToDoor = () => {
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-20"
         >
-          <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/10 text-[#E8A838] font-bold text-xs rounded-full uppercase tracking-widest mb-4 shadow-sm">
-            Η Διαδρομή
-          </span>
+
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
             Από το Κτήμα στο Σπίτι σας
           </h2>

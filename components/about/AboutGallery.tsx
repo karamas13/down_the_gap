@@ -20,8 +20,7 @@ export const AboutGallery = () => {
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-
-  
+  const [isImgLoading, setIsImgLoading] = useState(true);
 
   // Fetch Gallery Items from Supabase
   useEffect(() => {
@@ -46,7 +45,7 @@ export const AboutGallery = () => {
     };
 
     fetchGallery();
-  }, [supabase]);
+  }, []);
 
   // Lock Body Scroll
   useEffect(() => {
@@ -75,14 +74,21 @@ export const AboutGallery = () => {
 
   const handleNextImage = () => {
     if (activeImageIndex !== null && galleryImages.length > 0) {
+      setIsImgLoading(true);
       setActiveImageIndex((activeImageIndex + 1) % galleryImages.length);
     }
   };
 
   const handlePrevImage = () => {
     if (activeImageIndex !== null && galleryImages.length > 0) {
+      setIsImgLoading(true);
       setActiveImageIndex((activeImageIndex - 1 + galleryImages.length) % galleryImages.length);
     }
+  };
+
+  const openLightbox = (index: number) => {
+    setIsImgLoading(true);
+    setActiveImageIndex(index);
   };
 
   return (
@@ -128,7 +134,7 @@ export const AboutGallery = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4 }}
-                onClick={() => setActiveImageIndex(idx)}
+                onClick={() => openLightbox(idx)}
                 className="break-inside-avoid group cursor-pointer"
               >
                 <div className="relative w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 border border-[#2D4030]/10 shadow-sm group-hover:shadow-md transition-all duration-300">
@@ -195,8 +201,17 @@ export const AboutGallery = () => {
                     {activeImageIndex + 1} / {galleryImages.length}
                   </div>
 
-                  {/* Image Display */}
+                  {/* Image Display Container */}
                   <div className="relative w-full flex-1 max-w-6xl my-4 flex items-center justify-center pointer-events-auto">
+                    
+                    {/* Spinner Overlay */}
+                    {isImgLoading && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+                        <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin mb-2" />
+                        <span className="text-xs text-white/70 font-sans tracking-wide">Φόρτωση...</span>
+                      </div>
+                    )}
+
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={activeImageIndex}
@@ -212,7 +227,10 @@ export const AboutGallery = () => {
                           fill
                           priority
                           sizes="100vw"
-                          className="object-contain"
+                          onLoad={() => setIsImgLoading(false)}
+                          className={`object-contain transition-opacity duration-300 ${
+                            isImgLoading ? 'opacity-0' : 'opacity-100'
+                          }`}
                         />
                       </motion.div>
                     </AnimatePresence>
@@ -220,7 +238,7 @@ export const AboutGallery = () => {
                     {/* Navigation Arrows */}
                     <button
                       onClick={handlePrevImage}
-                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl"
+                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl z-30"
                       aria-label="Προηγούμενη"
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +248,7 @@ export const AboutGallery = () => {
 
                     <button
                       onClick={handleNextImage}
-                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl"
+                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl z-30"
                       aria-label="Επόμενη"
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

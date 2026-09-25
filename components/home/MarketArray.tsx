@@ -127,10 +127,7 @@ export const MarketArray = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#2D4030]/10 backdrop-blur-md border border-[#2D4030]/15 rounded-full text-xs font-extrabold uppercase tracking-widest text-[#2D4030] mb-4 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#C86D51] animate-ping" />
-            Πού Θα Μας Βρείτε
-          </div>
+  
           <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight leading-tight text-[#2D4030]">
             Εβδομαδιαίο Πρόγραμμα Λαϊκών
           </h2>

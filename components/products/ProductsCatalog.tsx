@@ -130,11 +130,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             transition={{ duration: 0.3 }}
             className={`p-6 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-md border ${currentTheme.border} shadow-sm mb-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4`}
           >
-            <div>
-              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${currentTheme.badgeBg} mb-2`}>
-                <span>{currentTheme.icon}</span>
-                <span>Εποχιακή Ενότητα</span>
-              </span>
+            <div>              
               <h2 className="font-serif text-2xl sm:text-3xl font-black">{currentTheme.bannerTitle}</h2>
               <p className="text-xs sm:text-sm text-[#2D4030]/75 mt-1 max-w-2xl font-light">
                 {currentTheme.bannerDesc}

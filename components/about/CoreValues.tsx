@@ -48,17 +48,7 @@ export const CoreValues = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D4030]/5 border border-[#2D4030]/10 text-xs font-extrabold uppercase tracking-widest text-[#C86D51]"
-          >
-            <span>🌱</span>
-            <span>Η Υπόσχεσή μας</span>
-          </motion.div>
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">      
 
           <motion.h2
             initial={{ opacity: 0, y: 15 }}

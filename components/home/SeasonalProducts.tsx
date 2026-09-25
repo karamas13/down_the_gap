@@ -67,11 +67,7 @@ export const SeasonalProducts = () => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-2xl">
-            {/* Glass Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/15 text-[#E8A838] rounded-full text-xs font-extrabold uppercase tracking-widest mb-4 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#E8A838] animate-pulse" />
-              Τώρα στην Εποχή τους
-            </div>
+
 
             <h2 className="font-serif text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
               Φρέσκα Εποχιακά Προϊόντα

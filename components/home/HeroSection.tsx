@@ -59,21 +59,22 @@ export const HeroSection = () => {
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
         
-        {/* Left Column: High Impact Content */}
+        {/* Left Column */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="lg:col-span-7 space-y-8"
         >
-          {/* Live Status Pill */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-white/80 backdrop-blur-md border border-[#2D4030]/10 rounded-full shadow-sm">
+          <div className="inline-flex items-center py-2 rounded-full">
             <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E8A838] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E8A838]"></span>
-            </span>
-            <span className="text-[#2D4030] font-semibold text-xs sm:text-sm tracking-wide uppercase">
-              ΚΑΤΩ ΑΠ' ΤΟ ΑΥΛΑΚΙ
+            </span>            
+            <span className="text-[#2D4030] font-semibold text-xl sm:text-3xl tracking-wide uppercase">
+              ΚΑΤΩ ΑΠ' 
+              <span className='text-[#C86D51] '> ΤΟ ΑΥΛΑΚΙ </span> 
+               <br/> 
+               <span className='text-emerald-600'>Bιολογικά </span>
+               Προϊόντα
             </span>
           </div>
 

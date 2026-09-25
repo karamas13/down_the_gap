@@ -34,16 +34,7 @@ export const ProductHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Main Text & Headlines */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-extrabold uppercase tracking-widest text-[#E8A838]"
-            >
-              <span>🌾</span>
-              <span>100% Φυσική Καλλιέργεια</span>
-            </motion.div>
+          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">      
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -51,7 +42,8 @@ export const ProductHero = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="font-serif text-4xl sm:text-6xl font-black tracking-tight leading-tight"
             >
-              Οι Θησαυροί της Γης μας σε Κάθε Εποχή
+              Οι Θησαυροί της Γης μας 
+              <span className='text-transparent tracking-tight bg-clip-text bg-linear-to-r from-amber-200 via-purple-400 to-green-700'> σε Κάθε Εποχή</span>
             </motion.h1>
 
             <motion.p
