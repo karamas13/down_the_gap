@@ -12,10 +12,11 @@ interface ProductsCatalogProps {
 
 type SeasonFilter = 'all' | 'summer' | 'winter';
 
-// Θεματικές ρυθμίσεις ανά εποχή
+// Θεματικές ρυθμίσεις ανά εποχή με Radial Gradient από το κέντρο
 const SEASON_CONFIG = {
   all: {
-    bgGlow: 'from-[#2D4030]/10 via-[#FAF7F2] to-[#FAF7F2]',
+    // Κυκλικό gradient από το κέντρο: βαθύ γήινο πράσινο -> ζεστό μπεζ
+    bgRadial: 'radial-gradient(circle at center, rgba(40, 130, 1, 0.40) 35%, rgba(245, 240, 230, 0.85) 55%, #FAF7F2 120%)',
     badgeBg: 'bg-[#2D4030]/10 text-[#2D4030]',
     border: 'border-[#2D4030]/20',
     bannerTitle: 'Όλη η Σοδειά μας',
@@ -23,7 +24,7 @@ const SEASON_CONFIG = {
     icon: '🌿',
   },
   summer: {
-    bgGlow: 'from-[#C86D51]/15 via-[#FAF7F2] to-[#FAF7F2]',
+    bgRadial: 'radial-gradient(circle at center, rgba(200, 109, 81, 0.50) 25%, rgba(253, 240, 230, 0.85) 55%, #FAF7F2 100%)',
     badgeBg: 'bg-[#C86D51]/10 text-[#C86D51]',
     border: 'border-[#C86D51]/30',
     bannerTitle: 'Θερινή Συγκομιδή ☀️',
@@ -31,7 +32,8 @@ const SEASON_CONFIG = {
     icon: '☀️',
   },
   winter: {
-    bgGlow: 'from-blue-900/15 via-[#FAF7F2] to-[#FAF7F2]',
+    // Κυκλικό gradient από το κέντρο: βαθύ χειμερινό μπλε -> μπεζ
+    bgRadial: 'radial-gradient(circle at center, rgba(30, 58, 138, 0.50) 25%, rgba(235, 242, 250, 0.85) 55%, #FAF7F2 100%)',
     badgeBg: 'bg-blue-900/10 text-blue-900',
     border: 'border-blue-900/20',
     bannerTitle: 'Χειμερινή Συγκομιδή ❄️',
@@ -67,7 +69,6 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
         if (error) throw error;
 
         if (data) {
-          // Αντιστοίχιση των πεδίων της βάσης (snake_case) με το TypeScript Interface (camelCase)
           const mappedProducts: Product[] = data.map((p) => ({
             id: p.id,
             title: p.title,
@@ -117,7 +118,12 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
   };
 
   return (
-    <section className={`relative py-20 transition-colors duration-700 bg-linear-to-b ${currentTheme.bgGlow} text-[#2D4030]`}>
+    <section
+      className="relative py-20 text-[#2D4030] transition-all duration-700 bg-[#FAF7F2]"
+      style={{
+        backgroundImage: currentTheme.bgRadial,
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Seasonal Banner */}
@@ -128,7 +134,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
-            className={`p-6 sm:p-8 rounded-3xl bg-white/70 backdrop-blur-md border ${currentTheme.border} shadow-sm mb-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4`}
+            className={`p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-md border ${currentTheme.border} shadow-sm mb-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-center lg:text-left`}
           >
             <div>              
               <h2 className="font-serif text-2xl sm:text-3xl font-black">{currentTheme.bannerTitle}</h2>
@@ -138,7 +144,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             </div>
 
             {/* Quick Count Badge */}
-            <div className="shrink-0 bg-white px-5 py-3 rounded-2xl border border-[#2D4030]/10 text-center shadow-xs">
+            <div className="shrink-0 bg-white px-5 py-3 rounded-2xl border border-[#2D4030]/10 text-center shadow-xs mx-auto">
               <span className="block text-2xl font-serif font-black">{filteredProducts.length}</span>
               <span className="text-[11px] font-bold text-[#2D4030]/60 uppercase tracking-wider">Λαχανικά</span>
             </div>
@@ -152,7 +158,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
           <div className="flex items-center gap-1.5 bg-white p-1.5 rounded-2xl border border-[#2D4030]/10 shadow-sm overflow-x-auto">
             <button
               onClick={() => setActiveSeason('all')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 activeSeason === 'all'
                   ? 'bg-[#2D4030] text-[#FAF7F2] shadow-sm'
                   : 'text-[#2D4030]/70 hover:text-[#2D4030] hover:bg-[#2D4030]/5'
@@ -167,7 +173,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
 
             <button
               onClick={() => setActiveSeason('summer')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 activeSeason === 'summer'
                   ? 'bg-[#C86D51] text-white shadow-sm'
                   : 'text-[#2D4030]/70 hover:text-[#C86D51] hover:bg-[#C86D51]/5'
@@ -182,7 +188,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
 
             <button
               onClick={() => setActiveSeason('winter')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 activeSeason === 'winter'
                   ? 'bg-blue-900 text-white shadow-sm'
                   : 'text-[#2D4030]/70 hover:text-blue-900 hover:bg-blue-900/5'
@@ -203,10 +209,10 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Αναζήτηση λαχανικού..."
-              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-2xl bg-white border border-[#2D4030]/15 focus:outline-none focus:border-[#2D4030] shadow-xs placeholder-[#2D4030]/40"
+              className="w-full pl-10 pr-8 py-2.5 text-xs rounded-2xl bg-white border border-[#2D4030]/15 focus:outline-none focus:border-[#2D4030] shadow-xs placeholder-[#2D4030]/40"
             />
             <svg
-              className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#2D4030]/40"
+              className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#2D4030]/40 pointer-events-none"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -216,7 +222,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#2D4030]/50 hover:text-[#2D4030]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#2D4030]/50 hover:text-[#2D4030] cursor-pointer"
               >
                 ✕
               </button>
@@ -271,7 +277,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             </p>
             <button
               onClick={handleResetFilters}
-              className="mt-5 px-5 py-2.5 rounded-xl bg-[#2D4030] text-[#FAF7F2] text-xs font-bold hover:bg-[#2D4030]/90 transition-colors shadow-sm"
+              className="mt-5 px-5 py-2.5 rounded-xl bg-[#2D4030] text-[#FAF7F2] text-xs font-bold hover:bg-[#2D4030]/90 transition-colors shadow-sm cursor-pointer"
             >
               Επαναφορά Φίλτρων
             </button>

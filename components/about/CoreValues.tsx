@@ -40,22 +40,28 @@ const values = [
 
 export const CoreValues = () => {
   return (
-    <section className="py-24 bg-[#FAF7F2] text-[#2D4030] relative overflow-hidden">
-      {/* Decorative Ambient Background Elements */}
-      <div className="absolute top-0 right-1/3 w-96 h-96 bg-[#2D4030]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#C86D51]/5 rounded-full blur-3xl pointer-events-none" />
+    <section className="py-24 bg-[#1E2C22] text-white relative overflow-hidden">
+      {/* Organic Noise Texture / Mesh Glow Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-[#2D4030] via-[#1E2C22] to-[#121B15] opacity-90" />
+      
+      {/* Ambient Gradient Orbs */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#C86D51]/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-10 right-0 w-120 h-120 bg-[#4A6B50]/20 rounded-full blur-[140px] pointer-events-none" />
+
+      {/* Decorative Subtle Grid Lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">      
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4"> 
 
           <motion.h2
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-[#2D4030] leading-tight"
+            className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight"
           >
             Οι Θεμέλιοι Λίθοι της Καλλιέργειάς μας
           </motion.h2>
@@ -65,7 +71,7 @@ export const CoreValues = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="text-base sm:text-lg text-[#2D4030]/75 font-normal leading-relaxed max-w-2xl mx-auto"
+            className="text-base sm:text-lg text-white/75 font-light leading-relaxed max-w-2xl mx-auto"
           >
             Πίσω από κάθε καρπό που φτάνει στο τραπέζι σας κρύβεται μια αδιάκοπη αφοσίωση στη φύση, την υγεία και την αυθεντική γεύση.
           </motion.p>
@@ -80,38 +86,38 @@ export const CoreValues = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.12 }}
-              className="group relative h-full bg-white p-7 sm:p-8 rounded-3xl border border-[#2D4030]/10 shadow-sm hover:shadow-xl hover:border-[#C86D51]/30 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+              className="group relative h-full bg-white/4 backdrop-blur-xl p-7 sm:p-8 rounded-3xl border border-white/10 hover:border-[#C86D51]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden hover:-translate-y-1.5 hover:bg-white/[0.07] hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]"
             >
-              {/* Subtle Top Accent Line on Hover */}
-              <div className="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-[#2D4030] to-[#C86D51] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Top Accent Gradient Border Glow on Hover */}
+              <div className="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-[#E5A88B] via-[#C86D51] to-[#4A6B50] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div>
                 {/* Header Row: Icon & Tag */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-13 h-13 rounded-2xl bg-[#2D4030]/5 group-hover:bg-[#C86D51]/10 flex items-center justify-center text-2xl transition-colors duration-300 group-hover:scale-105 transform">
+                  <div className="w-13 h-13 rounded-2xl bg-white/10 group-hover:bg-[#C86D51]/20 border border-white/10 flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 shadow-inner">
                     {item.icon}
                   </div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#2D4030]/60 bg-[#2D4030]/5 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-white/70 bg-white/10 border border-white/10 px-2.5 py-1 rounded-lg">
                     {item.tag}
                   </span>
                 </div>
 
                 {/* Title & Description */}
-                <h3 className="font-serif text-xl font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors duration-200 mb-3 leading-snug">
+                <h3 className="font-serif text-xl font-bold text-white group-hover:text-[#E5A88B] transition-colors duration-200 mb-3 leading-snug">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#2D4030]/75 leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-sans font-light">
                   {item.description}
                 </p>
               </div>
 
               {/* Card Footer: Highlight Pill */}
-              <div className="pt-6 mt-6 border-t border-[#2D4030]/10 flex items-center justify-between">
-                <span className="text-xs font-bold text-[#C86D51] flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C86D51] animate-pulse" />
+              <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+                <span className="text-xs font-bold text-[#E5A88B] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E5A88B] animate-pulse" />
                   {item.highlight}
                 </span>
-                <span className="text-xs text-[#2D4030]/40 font-serif font-extrabold">
+                <span className="text-xs text-white/30 font-serif font-extrabold">
                   0{idx + 1}
                 </span>
               </div>

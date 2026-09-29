@@ -92,18 +92,17 @@ export const AboutGallery = () => {
   };
 
   return (
-    <section className="py-24 bg-white border-t border-[#2D4030]/10 text-[#2D4030]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section 
+      className="py-24 text-[#2D4030] relative overflow-hidden bg-linear-to-b from-[#ced7a9] via-[#bcca68] to-[#dfb241]"
+    >     
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="mb-12">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#C86D51] block mb-2">
-            Φωτογραφικό Υλικό
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-black text-[#2D4030]">
+        <div className="mb-14 max-w-2xl">       
+          <h2 className="font-serif text-3xl sm:text-5xl font-black text-[#2D4030] leading-tight">
             Μια Ημέρα στο Κτήμα
           </h2>
-          <p className="text-sm sm:text-base text-[#2D4030]/75 max-w-xl mt-3 leading-relaxed">
+          <p className="text-sm sm:text-base text-[#2D4030]/80 font-light max-w-xl mt-3 leading-relaxed">
             Στιγμιότυπα από την καθημερινή μας ενασχόληση με τη γη, τη φροντίδα των καλλιεργειών και την προετοιμασία της συγκομιδής.
           </p>
         </div>
@@ -112,14 +111,21 @@ export const AboutGallery = () => {
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((n) => (
-              <div key={n} className="animate-pulse bg-gray-200 h-64 rounded-2xl w-full" />
+              <div 
+                key={n} 
+                style={{ backgroundColor: 'rgba(45, 64, 48, 0.05)', borderColor: 'rgba(45, 64, 48, 0.1)' }}
+                className="animate-pulse h-72 rounded-3xl w-full border" 
+              />
             ))}
           </div>
         )}
 
         {/* Empty State */}
         {!loading && galleryImages.length === 0 && (
-          <div className="text-center py-12 text-gray-500 font-sans">
+          <div 
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', borderColor: 'rgba(45, 64, 48, 0.1)' }}
+            className="text-center py-16 backdrop-blur-md rounded-3xl border text-[#2D4030]/60 font-sans"
+          >
             Δεν υπάρχουν ακόμα διαθέσιμες φωτογραφίες στη συλλογή.
           </div>
         )}
@@ -130,30 +136,50 @@ export const AboutGallery = () => {
             {galleryImages.map((img, idx) => (
               <motion.div
                 key={img.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
                 onClick={() => openLightbox(idx)}
-                className="break-inside-avoid group cursor-pointer"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderColor: 'rgba(45, 64, 48, 0.12)',
+                  boxShadow: '0 10px 30px -5px rgba(45, 64, 48, 0.08)'
+                }}
+                className="break-inside-avoid group cursor-pointer p-3.5 rounded-3xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="relative w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 border border-[#2D4030]/10 shadow-sm group-hover:shadow-md transition-all duration-300">
+                <div 
+                  style={{ backgroundColor: 'rgba(45, 64, 48, 0.04)' }}
+                  className="relative w-full rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-auto"
+                >
                   <Image
                     src={img.src}
                     alt={img.alt || img.title}
                     width={800}
                     height={600}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                    className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
+                  
+                  {/* Hover Overlay with Expand Icon */}
+                  <div 
+                    style={{ backgroundColor: 'rgba(45, 64, 48, 0.35)' }}
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-white/95 text-[#2D4030] flex items-center justify-center shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="mt-3 px-1">
-                  <h3 className="font-serif text-lg font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors">
+                <div className="mt-3.5 mb-1 px-2">
+                  <h3 className="font-serif text-lg font-bold text-[#2D4030] group-hover:text-[#C86D51] transition-colors duration-200">
                     {img.title}
                   </h3>
                   {img.caption && (
-                    <p className="text-xs text-[#2D4030]/75 mt-1 leading-relaxed">
+                    <p className="text-xs text-[#2D4030]/75 mt-1 leading-relaxed font-sans line-clamp-2">
                       {img.caption}
                     </p>
                   )}
@@ -185,7 +211,7 @@ export const AboutGallery = () => {
                 {/* Close Button */}
                 <button
                   onClick={() => setActiveImageIndex(null)}
-                  className="fixed top-5 right-5 z-50 p-3 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-all border border-white/10 shadow-lg"
+                  className="fixed top-5 right-5 z-50 p-3 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-all border border-white/10 shadow-lg cursor-pointer"
                   aria-label="Κλείσιμο"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,7 +264,7 @@ export const AboutGallery = () => {
                     {/* Navigation Arrows */}
                     <button
                       onClick={handlePrevImage}
-                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl z-30"
+                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl z-30 cursor-pointer"
                       aria-label="Προηγούμενη"
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -248,7 +274,7 @@ export const AboutGallery = () => {
 
                     <button
                       onClick={handleNextImage}
-                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl z-30"
+                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-black/40 hover:bg-white hover:text-black text-white transition-all border border-white/15 backdrop-blur-md shadow-xl z-30 cursor-pointer"
                       aria-label="Επόμενη"
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -65,7 +65,7 @@ export const GalleryManager = () => {
     setAlt(item.alt || '');
     setFile(null);
     setPreviewUrl(item.src); // Προβολή της υπάρχουσας εικόνας
-    
+
     // Scroll ομαλά στη φόρμα για ευκολία
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -171,7 +171,7 @@ export const GalleryManager = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative z-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
         <div>
@@ -190,8 +190,8 @@ export const GalleryManager = () => {
       {/* Main Grid Layout: Form Left, Gallery Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* LEFT COLUMN: Form */}
-        <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm sticky top-6">
+        {/* LEFT COLUMN: Form (Sticky ONLY on desktop breakpoint lg:) */}
+        <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm lg:sticky lg:top-6 z-10">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
               {editingId ? (
@@ -208,8 +208,9 @@ export const GalleryManager = () => {
             </h3>
             {editingId && (
               <button
+                type="button"
                 onClick={resetForm}
-                className="text-xs font-semibold text-gray-500 hover:text-gray-700 underline"
+                className="text-xs font-semibold text-gray-500 hover:text-gray-700 underline cursor-pointer"
               >
                 + Νέα Καταχώρηση
               </button>
@@ -223,13 +224,14 @@ export const GalleryManager = () => {
                 Εικόνα {editingId ? '(Προαιρετικό)' : '*'}
               </label>
 
-              <div className="relative group border-2 border-dashed border-gray-300 hover:border-[#2D4030] rounded-xl p-4 transition-all text-center bg-gray-50/50 hover:bg-gray-50">
+              <div className="relative group border-2 border-dashed border-gray-300 hover:border-[#2D4030] rounded-xl p-4 transition-all text-center bg-gray-50/50 hover:bg-gray-50 overflow-hidden">
                 {previewUrl ? (
                   <div className="relative w-full h-48 rounded-lg overflow-hidden group">
                     <Image
                       src={previewUrl}
                       alt="Preview"
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -254,7 +256,7 @@ export const GalleryManager = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
                   required={!editingId && !previewUrl}
                 />
               </div>
@@ -308,7 +310,7 @@ export const GalleryManager = () => {
               <button
                 type="submit"
                 disabled={uploading}
-                className="flex-1 py-3 bg-[#2D4030] text-white font-bold rounded-xl text-sm hover:bg-[#2D4030]/90 disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-sm"
+                className="flex-1 py-3 bg-[#2D4030] text-white font-bold rounded-xl text-sm hover:bg-[#2D4030]/90 disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
               >
                 {uploading && (
                   <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -323,7 +325,7 @@ export const GalleryManager = () => {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl text-sm hover:bg-gray-200 transition-all"
+                  className="px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl text-sm hover:bg-gray-200 transition-all cursor-pointer"
                 >
                   Ακύρωση
                 </button>
@@ -333,7 +335,7 @@ export const GalleryManager = () => {
         </div>
 
         {/* RIGHT COLUMN: Gallery Cards Display */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 w-full">
           {loading ? (
             <div className="bg-white p-12 rounded-2xl border border-gray-200 text-center text-gray-500 font-medium">
               Φόρτωση εικόνων...
@@ -349,22 +351,23 @@ export const GalleryManager = () => {
                 return (
                   <div
                     key={item.id}
-                    className={`bg-white rounded-2xl border transition-all overflow-hidden flex flex-col justify-between group ${
+                    className={`bg-white rounded-2xl border transition-all overflow-hidden flex flex-col justify-between group relative isolate ${
                       isEditingThis
                         ? 'border-amber-500 ring-2 ring-amber-500/20 shadow-md'
                         : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
                     }`}
                   >
-                    {/* Image Preview */}
+                    {/* Image Preview Container */}
                     <div className="relative w-full h-44 bg-gray-100 overflow-hidden">
                       <Image
                         src={item.src}
                         alt={item.alt || item.title}
                         fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       {isEditingThis && (
-                        <div className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow">
+                        <div className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow z-10">
                           Υπό Επεξεργασία
                         </div>
                       )}
@@ -388,14 +391,16 @@ export const GalleryManager = () => {
                       {/* Action Buttons */}
                       <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
                         <button
+                          type="button"
                           onClick={() => handleEditClick(item)}
-                          className="flex-1 py-1.5 px-3 bg-gray-100 hover:bg-[#2D4030] text-gray-700 hover:text-white font-bold text-xs rounded-lg transition-colors text-center"
+                          className="flex-1 py-1.5 px-3 bg-gray-100 hover:bg-[#2D4030] text-gray-700 hover:text-white font-bold text-xs rounded-lg transition-colors text-center cursor-pointer"
                         >
                           Επεξεργασία
                         </button>
                         <button
+                          type="button"
                           onClick={() => handleDelete(item)}
-                          className="py-1.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition-colors"
+                          className="py-1.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition-colors cursor-pointer"
                           title="Διαγραφή"
                         >
                           Διαγραφή
