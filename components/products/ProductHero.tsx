@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
@@ -13,9 +12,9 @@ export const ProductHero = () => {
           src="/images/fill3.avif"
           alt="Product Hero Background"
           fill
-          priority // Φορτώνει άμεσα (preloaded)
-          sizes="100vw" // Responsive μεγέθη για αποφυγή download τεράστιων assets
-          quality={75} // Βελτιστοποίηση μεγέθους αρχείου
+          priority 
+          sizes="100vw" 
+          quality={75} 
           placeholder="blur"
           // Ελαφρύ SVG blur data-url για ακαριαία εμφάνιση φόντου πριν φορτώσει η εικόνα
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDQwMzAiLz48L3N2Zz4="
@@ -50,9 +49,9 @@ export const ProductHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base sm:text-lg text-[#FAF7F2]/80 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
+              className="text-base sm:text-lg text-[#FAF7F2]/95 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
             >
-              Στα κτήματα μας δεν πιέζουμε τη φύση. Καλλιεργούμε αποκλειστικά στην ώρα τους θερινούς και χειμερινούς καρπούς, προσφέροντάς σας αυθεντική γεύση και μέγιστη θρεπτική αξία.
+              Η παραγωγή μας βασίζεται στην υπαίθρια καλλιέργεια και καλύπτει μια ευρεία γκάμα προϊόντων τόσο για τη θερινή όσο και για τη χειμερινή περίοδο. Στις θερινές καλλιέργειες μας θα βρείτε ντόπιες ντομάτες, αγγούρια, κολοκύθια, πιπεριές, μελιτζάνες, καλαμπόκι, μαρούλια, κρεμμύδια και πολλά ακόμη. Για τον χειμώνα, έχουμε μπρόκολα, κουνουπίδια, γογγυλοκράμβη (γουλί-ρεβά), λάχανα και άλλα φρέσκα προϊόντα από τις καλλιέργειές μας.
             </motion.p>
 
             {/* Quick Stats Grid */}

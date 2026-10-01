@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
+import { ShoppingBasket } from 'lucide-react';
 import { DayCode, Market } from '../../types';
 
 interface DayConfig {
@@ -91,13 +93,27 @@ export const MarketArray = () => {
   return (
     <section 
       id="marketarray" 
-      className="scroll-mt-28 py-20 lg:py-28 bg-linear-to-br from-[#f5e1b8] via-[#f0debf] to-[#E2E8DF] text-[#2D4030] relative overflow-hidden"
+      className="scroll-mt-28 py-20 lg:py-28 text-[#2D4030] relative overflow-hidden bg-[#18231A]"
     >
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/cropscloseup.avif"
+          alt="Πανοραμική θέα κτήματος"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Soft Warm Overlay για να είναι ευανάγνωστα τα στοιχεία */}
+        <div className="absolute inset-0 bg-linear-to-b from-[#f5e1b8]/75 via-[#f0debf]/20 to-[#E2E8DF]/60  backdrop-blur-[1px]" />
+      </div>
+
       {/* --- DESIGN FLARE LAYERS --- */}
 
       {/* Subtle Micro-Grid Overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 opacity-[0.03] pointer-events-none z-1"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h32v32H0V0zm1 1h30v30H1V1z' fill='%232D4030' fill-opacity='1'/%3E%3C/svg%3E")`
         }}
@@ -111,7 +127,7 @@ export const MarketArray = () => {
           scale: [1, 1.15, 1] 
         }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-20 -left-20 w-137.5 h-137.5 bg-radial from-[#E8A838]/25 via-[#E8A838]/0 to-transparent rounded-full blur-[100px] pointer-events-none" 
+        className="absolute -top-20 -left-20 w-137.5 h-137.5 bg-radial from-[#E8A838]/25 via-[#E8A838]/0 to-transparent rounded-full blur-[100px] pointer-events-none z-1" 
       />
       <motion.div 
         animate={{ 
@@ -120,14 +136,12 @@ export const MarketArray = () => {
           scale: [1, 1.2, 1] 
         }}
         transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        className="absolute -bottom-20 -right-20 w-150 h-150 bg-radial from-[#C86D51]/20 via-[#C86D51]/0 to-transparent rounded-full blur-[110px] pointer-events-none" 
+        className="absolute -bottom-20 -right-20 w-150 h-150 bg-radial from-[#C86D51]/20 via-[#C86D51]/0 to-transparent rounded-full blur-[110px] pointer-events-none z-1" 
       />
-    
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="text-center max-w-3xl mx-auto mb-12">
-  
           <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight leading-tight text-[#2D4030]">
             Εβδομαδιαίο Πρόγραμμα Λαϊκών
           </h2>
@@ -141,7 +155,7 @@ export const MarketArray = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-12 bg-[#1E2C22] text-[#FAF7F2] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-white/10"
+          className="mb-12 bg-[#1E2C22]/90 backdrop-blur-md text-[#FAF7F2] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-white/10"
         >
           <div className="absolute -right-16 -top-16 w-72 h-72 bg-[#E8A838]/20 rounded-full blur-3xl pointer-events-none" />
           
@@ -298,9 +312,9 @@ export const MarketArray = () => {
         {/* Contact CTA Card */}
         <div className="mt-12 p-8 bg-white/90 backdrop-blur-md rounded-3xl border border-[#2D4030]/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#E8A838]/20 text-[#2D4030] flex items-center justify-center text-2xl shrink-0 font-bold">
-              🧺
-            </div>
+            
+             <ShoppingBasket color="#333" className='size-10'/>
+            
             <div>
               <h4 className="font-serif text-lg font-bold text-[#2D4030]">
                 Ειδικές Πληροφορίες για τη Λαϊκή

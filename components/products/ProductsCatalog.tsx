@@ -5,50 +5,61 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ProductCard } from './ProductCard';
 import { Product } from '@/types/index';
 import { supabase } from '@/lib/supabase';
+import { Sprout, Sun, Snowflake, CheckCircle2, Search, X, Leaf } from 'lucide-react';
 
 interface ProductsCatalogProps {
   products?: Product[];
 }
 
-type SeasonFilter = 'all' | 'summer' | 'winter';
+// Προσθήκη του 'available' στις επιλογές φίλτρου
+type SeasonFilter = 'available' | 'all' | 'summer' | 'winter';
 
-// Θεματικές ρυθμίσεις ανά εποχή με Radial Gradient από το κέντρο
+// Θεματικές ρυθμίσεις ανά εποχή/κατάσταση με Radial Gradient από το κέντρο
 const SEASON_CONFIG = {
+  // Νέα ρύθμιση για τα διαθέσιμα προϊόντα - Ζωντανό πράσινο
+  available: {
+    bgRadial: 'radial-gradient(circle at center, rgba(34, 197, 94, 0.35) 25%, rgba(245, 240, 230, 0.85) 55%, #FAF7F2 100%)',
+    badgeBg: 'bg-green-600/10 text-green-700',
+    border: 'border-green-600/20',
+    bannerTitle: 'Διαθέσιμα Τώρα',
+    bannerDesc: 'Φρέσκα λαχανικά που συλλέγονται αυτή τη στιγμή από τα κτήματά μας και είναι έτοιμα για παράδοση.',
+    icon: CheckCircle2,
+  },
   all: {
-    // Κυκλικό gradient από το κέντρο: βαθύ γήινο πράσινο -> ζεστό μπεζ
-    bgRadial: 'radial-gradient(circle at center, rgba(40, 130, 1, 0.40) 35%, rgba(245, 240, 230, 0.85) 55%, #FAF7F2 120%)',
+    bgRadial: 'radial-gradient(circle at center, rgba(40, 130, 1, 0.35) 35%, rgba(245, 240, 230, 0.85) 55%, #FAF7F2 120%)',
     badgeBg: 'bg-[#2D4030]/10 text-[#2D4030]',
     border: 'border-[#2D4030]/20',
     bannerTitle: 'Όλη η Σοδειά μας',
     bannerDesc: 'Ανακαλύψτε το σύνολο των φρέσκων λαχανικών μας, καλλιεργημένων με απόλυτο σεβασμό στον κύκλο της φύσης.',
-    icon: '🌿',
+    icon: Sprout,
   },
   summer: {
-    bgRadial: 'radial-gradient(circle at center, rgba(200, 109, 81, 0.50) 25%, rgba(253, 240, 230, 0.85) 55%, #FAF7F2 100%)',
+    bgRadial: 'radial-gradient(circle at center, rgba(200, 109, 81, 0.40) 25%, rgba(253, 240, 230, 0.85) 55%, #FAF7F2 100%)',
     badgeBg: 'bg-[#C86D51]/10 text-[#C86D51]',
     border: 'border-[#C86D51]/30',
-    bannerTitle: 'Θερινή Συγκομιδή ☀️',
+    bannerTitle: 'Θερινή Συγκομιδή',
     bannerDesc: 'Λαχανικά γεμάτα ήλιο, άρωμα και γλυκύτητα. Από το μποστάνι μας κατευθείαν στο τραπέζι σας.',
-    icon: '☀️',
+    icon: Sun,
   },
   winter: {
-    // Κυκλικό gradient από το κέντρο: βαθύ χειμερινό μπλε -> μπεζ
-    bgRadial: 'radial-gradient(circle at center, rgba(30, 58, 138, 0.50) 25%, rgba(235, 242, 250, 0.85) 55%, #FAF7F2 100%)',
-    badgeBg: 'bg-blue-900/10 text-blue-900',
+    bgRadial: 'radial-gradient(circle at center, rgba(19, 105, 180, 0.80) 25%, rgba(235, 242, 250, 0.85) 55%, #FAF7F2 100%)',
+    badgeBg: 'bg-blue-600/10 text-blue-900',
     border: 'border-blue-900/20',
-    bannerTitle: 'Χειμερινή Συγκομιδή ❄️',
+    bannerTitle: 'Χειμερινή Συγκομιδή',
     bannerDesc: 'Πλούσια θρεπτικά λαχανικά ανθεκτικά στις κρύες μέρες του χειμώνα.',
-    icon: '❄️',
+    icon: Snowflake,
   },
 };
 
 export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: initialProducts }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts || []);
   const [loading, setLoading] = useState<boolean>(!initialProducts || initialProducts.length === 0);
-  const [activeSeason, setActiveSeason] = useState<SeasonFilter>('all');
+  // Θέτουμε το 'available' ως default selected tab
+  const [activeSeason, setActiveSeason] = useState<SeasonFilter>('available');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const currentTheme = SEASON_CONFIG[activeSeason];
+  const IconBanner = currentTheme.icon;
 
   // Fetch προϊόντων από το Supabase αν δεν έχουν δοθεί ως props
   useEffect(() => {
@@ -90,43 +101,55 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
     fetchProductsFromBackend();
   }, [initialProducts]);
 
-  // Υπολογισμός πλήθους προϊόντων ανά εποχή
+  // Υπολογισμός πλήθους προϊόντων ανά κατηγορία/εποχή
   const counts = useMemo(() => {
     return {
       all: products.length,
+      available: products.filter((p) => p.isAvailable).length,
       summer: products.filter((p) => p.season === 'summer').length,
       winter: products.filter((p) => p.season === 'winter').length,
     };
   }, [products]);
 
-  // Φιλτράρισμα αποκλειστικά βάσει εποχής ('summer' | 'winter') και αναζήτησης
+  // Φιλτράρισμα βάσει tab, διαθεσιμότητας και αναζήτησης
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      const matchesSeason = activeSeason === 'all' || product.season === activeSeason;
+      let matchesTab = false;
+      if (activeSeason === 'all') {
+        matchesTab = true;
+      } else if (activeSeason === 'available') {
+        // Το tab "Διαθέσιμα" δείχνει μόνο όσα είναι όντως διαθέσιμα, ανεξαρτήτως season
+        matchesTab = product.isAvailable === true;
+      } else {
+        // Τα tabs season δείχνουν όλα τα προϊόντα της season (διαθέσιμα και μη)
+        matchesTab = product.season === activeSeason;
+      }
+
       const matchesSearch =
         searchQuery === '' ||
         product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description?.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesSeason && matchesSearch;
+      return matchesTab && matchesSearch;
     });
   }, [products, activeSeason, searchQuery]);
 
   const handleResetFilters = () => {
-    setActiveSeason('all');
+    // Επαναφορά στο default tab "Διαθέσιμα"
+    setActiveSeason('available');
     setSearchQuery('');
   };
 
   return (
     <section
-      className="relative py-20 text-[#2D4030] transition-all duration-700 bg-[#FAF7F2]"
+      className="relative py-12 sm:py-20 text-[#2D4030] transition-all duration-700 bg-[#FAF7F2] overflow-hidden"
       style={{
         backgroundImage: currentTheme.bgRadial,
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Seasonal Banner */}
+        {/* Seasonal/Availability Banner */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSeason}
@@ -134,97 +157,99 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
-            className={`p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-md border ${currentTheme.border} shadow-sm mb-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-center lg:text-left`}
+            className={`p-6 sm:p-8 rounded-3xl bg-white/80 backdrop-blur-md border ${currentTheme.border} shadow-sm mb-8 sm:mb-10 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left`}
           >
-            <div>              
-              <h2 className="font-serif text-2xl sm:text-3xl font-black">{currentTheme.bannerTitle}</h2>
-              <p className="text-xs sm:text-sm text-[#2D4030]/75 mt-1 max-w-2xl font-light">
-                {currentTheme.bannerDesc}
-              </p>
+            <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-5">
+              <div className={`shrink-0 p-3 rounded-2xl ${currentTheme.badgeBg} border ${currentTheme.border}`}>
+                <IconBanner className="w-8 h-8 sm:w-10 sm:h-10 stroke-[1.5]" />
+              </div>
+              <div>               
+                <h2 className="font-serif text-2xl sm:text-3xl font-black">{currentTheme.bannerTitle}</h2>
+                <p className="text-xs sm:text-sm text-[#2D4030]/75 mt-1 max-w-2xl font-light leading-relaxed">
+                  {currentTheme.bannerDesc}
+                </p>
+              </div>
             </div>
 
             {/* Quick Count Badge */}
-            <div className="shrink-0 bg-white px-5 py-3 rounded-2xl border border-[#2D4030]/10 text-center shadow-xs mx-auto">
-              <span className="block text-2xl font-serif font-black">{filteredProducts.length}</span>
+            <div className="shrink-0 bg-white px-5 py-3 rounded-2xl border border-[#2D4030]/10 text-center shadow-xs w-full md:w-auto">
+              <span className="block text-3xl font-serif font-black">{filteredProducts.length}</span>
               <span className="text-[11px] font-bold text-[#2D4030]/60 uppercase tracking-wider">Λαχανικά</span>
             </div>
           </motion.div>
         </AnimatePresence>
 
         {/* Controls: Seasons Tabs & Search Bar */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 pb-8">
+        <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-5 pb-8 sm:pb-10">
           
-          {/* Seasonal Tabs */}
-          <div className="flex items-center gap-1.5 bg-white p-1.5 rounded-2xl border border-[#2D4030]/10 shadow-sm overflow-x-auto">
-            <button
-              onClick={() => setActiveSeason('all')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeSeason === 'all'
-                  ? 'bg-[#2D4030] text-[#FAF7F2] shadow-sm'
-                  : 'text-[#2D4030]/70 hover:text-[#2D4030] hover:bg-[#2D4030]/5'
-              }`}
-            >
-              <span>🌿</span>
-              <span>Όλα</span>
-              <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] ${activeSeason === 'all' ? 'bg-white/20 text-white' : 'bg-[#2D4030]/10 text-[#2D4030]'}`}>
-                {counts.all}
-              </span>
-            </button>
+          {/* Seasonal/Availability Tabs - Responsive scrollable container */}
+          <div className="overflow-x-auto pb-2 -mb-2 xl:pb-0 xl:mb-0">
+            <div className="flex items-center gap-1.5 bg-white p-1.5 rounded-2xl border border-[#2D4030]/10 shadow-sm whitespace-nowrap w-max">
+              {/* Tab Διαθέσιμα - Πρώτο στη σειρά */}
+              <TabButton 
+                filter="available" 
+                activeFilter={activeSeason} 
+                setActiveFilter={setActiveSeason}
+                count={counts.available}
+                themeColor="text-green-600"
+                activeBg="bg-green-600"
+                Icon={CheckCircle2}
+                label="Διαθέσιμα Τώρα"
+              />
 
-            <button
-              onClick={() => setActiveSeason('summer')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeSeason === 'summer'
-                  ? 'bg-[#C86D51] text-white shadow-sm'
-                  : 'text-[#2D4030]/70 hover:text-[#C86D51] hover:bg-[#C86D51]/5'
-              }`}
-            >
-              <span>☀️</span>
-              <span>Θερινά</span>
-              <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] ${activeSeason === 'summer' ? 'bg-white/20 text-white' : 'bg-[#C86D51]/10 text-[#C86D51]'}`}>
-                {counts.summer}
-              </span>
-            </button>
+              <TabButton 
+                filter="all" 
+                activeFilter={activeSeason} 
+                setActiveFilter={setActiveSeason}
+                count={counts.all}
+                themeColor="text-[#2D4030]"
+                activeBg="bg-[#2D4030]"
+                Icon={Sprout}
+                label="Όλα"
+              />
 
-            <button
-              onClick={() => setActiveSeason('winter')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeSeason === 'winter'
-                  ? 'bg-blue-900 text-white shadow-sm'
-                  : 'text-[#2D4030]/70 hover:text-blue-900 hover:bg-blue-900/5'
-              }`}
-            >
-              <span>❄️</span>
-              <span>Χειμερινά</span>
-              <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] ${activeSeason === 'winter' ? 'bg-white/20 text-white' : 'bg-blue-900/10 text-blue-900'}`}>
-                {counts.winter}
-              </span>
-            </button>
+              <TabButton 
+                filter="summer" 
+                activeFilter={activeSeason} 
+                setActiveFilter={setActiveSeason}
+                count={counts.summer}
+                themeColor="text-[#C86D51]"
+                activeBg="bg-[#C86D51]"
+                Icon={Sun}
+                label="Θερινά"
+              />
+
+              <TabButton 
+                filter="winter" 
+                activeFilter={activeSeason} 
+                setActiveFilter={setActiveSeason}
+                count={counts.winter}
+                themeColor="text-blue-900"
+                activeBg="bg-blue-900"
+                Icon={Snowflake}
+                label="Χειμερινά"
+              />
+            </div>
           </div>
 
           {/* Search Input */}
-          <div className="relative w-full lg:w-72">
+          <div className="relative w-full xl:w-80">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Αναζήτηση λαχανικού..."
-              className="w-full pl-10 pr-8 py-2.5 text-xs rounded-2xl bg-white border border-[#2D4030]/15 focus:outline-none focus:border-[#2D4030] shadow-xs placeholder-[#2D4030]/40"
+              placeholder="Αναζήτηση λαχανικού (π.χ. ντομάτα)..."
+              className="w-full pl-11 pr-9 py-3 text-sm rounded-2xl bg-white border border-[#2D4030]/15 focus:outline-none focus:border-[#2D4030]/30 focus:ring-1 focus:ring-[#2D4030]/10 transition-all shadow-xs placeholder-[#2D4030]/40"
             />
-            <svg
-              className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#2D4030]/40 pointer-events-none"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#2D4030]/40 pointer-events-none" />
+            
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#2D4030]/50 hover:text-[#2D4030] cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-gray-100 text-[#2D4030]/50 hover:text-[#2D4030] transition-colors cursor-pointer"
+                aria-label="Καθαρισμός αναζήτησης"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -232,20 +257,20 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
 
         {/* Loading Skeleton */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 animate-pulse">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-              <div key={n} className="bg-white/80 rounded-3xl h-80 border border-[#2D4030]/10 p-4 flex flex-col justify-between">
-                <div className="bg-gray-200 h-48 rounded-2xl w-full"></div>
-                <div className="space-y-2 pt-4">
-                  <div className="bg-gray-200 h-4 rounded-md w-3/4"></div>
-                  <div className="bg-gray-200 h-3 rounded-md w-1/2"></div>
+              <div key={n} className="bg-white/80 rounded-3xl h-[360px] border border-[#2D4030]/10 p-5 flex flex-col justify-between shadow-sm">
+                <div className="bg-gray-200 h-52 rounded-2xl w-full"></div>
+                <div className="space-y-3 pt-5">
+                  <div className="bg-gray-200 h-5 rounded-md w-3/4"></div>
+                  <div className="bg-gray-200 h-4 rounded-md w-1/2"></div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
           /* Product Grid Layout */
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             <AnimatePresence mode="popLayout">
               {filteredProducts.map((product, idx) => (
                 <motion.div
@@ -254,7 +279,8 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.3, delay: Math.min(idx * 0.05, 0.3) }}
+                  className="h-full"
                 >
                   <ProductCard product={product} />
                 </motion.div>
@@ -266,25 +292,67 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
         {/* Empty State */}
         {!loading && filteredProducts.length === 0 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20 px-4 bg-white/60 backdrop-blur-md rounded-3xl border border-[#2D4030]/10 mt-8"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-20 px-6 bg-white/60 backdrop-blur-md rounded-3xl border border-[#2D4030]/10 mt-8 shadow-inner"
           >
-            <div className="text-4xl mb-3">🌱</div>
-            <h3 className="font-serif text-lg font-bold text-[#2D4030]">Δεν βρέθηκαν λαχανικά</h3>
-            <p className="text-xs text-[#2D4030]/70 mt-1 max-w-sm mx-auto">
-              Δεν υπήρξαν αποτελέσματα με την επιλεγμένη εποχή ή τον όρο αναζήτησης.
+            <div className="inline-flex p-4 rounded-full bg-white border border-[#2D4030]/10 mb-5 shadow-xs text-[#2D4030]/30">
+              <Leaf className="w-12 h-12 stroke-1" />
+            </div>
+            <h3 className="font-serif text-xl font-bold text-[#2D4030]">Δεν βρέθηκαν λαχανικά</h3>
+            <p className="text-sm text-[#2D4030]/70 mt-2 max-w-md mx-auto font-light leading-relaxed">
+              Δεν υπήρξαν αποτελέσματα που να ταιριάζουν με το επιλεγμένο φίλτρο <span className='font-semibold'>{currentTheme.bannerTitle}</span> {searchQuery && <>και την αναζήτηση <span className='font-semibold'>"{searchQuery}"</span></>}.
             </p>
             <button
               onClick={handleResetFilters}
-              className="mt-5 px-5 py-2.5 rounded-xl bg-[#2D4030] text-[#FAF7F2] text-xs font-bold hover:bg-[#2D4030]/90 transition-colors shadow-sm cursor-pointer"
+              className="mt-8 px-6 py-3 rounded-2xl bg-[#2D4030] text-[#FAF7F2] text-sm font-bold hover:bg-[#2D4030]/90 transition-colors shadow-md cursor-pointer flex items-center gap-2 mx-auto"
             >
-              Επαναφορά Φίλτρων
+              <Sprout className="w-4 h-4" />
+              Επαναφορά στο "Διαθέσιμα Τώρα"
             </button>
           </motion.div>
         )}
 
       </div>
     </section>
+  );
+};
+
+// Helper component για τα Tab Buttons για καθαρότερο κώδικα
+interface TabButtonProps {
+  filter: SeasonFilter;
+  activeFilter: SeasonFilter;
+  setActiveFilter: (filter: SeasonFilter) => void;
+  count: number;
+  themeColor: string;
+  activeBg: string;
+  Icon: React.ElementType;
+  label: string;
+}
+
+const TabButton: React.FC<TabButtonProps> = ({ 
+  filter, activeFilter, setActiveFilter, count, themeColor, activeBg, Icon, label 
+}) => {
+  const isActive = activeFilter === filter;
+  
+  return (
+    <button
+      onClick={() => setActiveFilter(filter)}
+      className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 cursor-pointer ${
+        isActive
+          ? `${activeBg} text-[#FAF7F2] shadow-md`
+          : `text-[#2D4030]/70 hover:${themeColor} hover:bg-[#2D4030]/5`
+      }`}
+    >
+      <Icon className={`w-4.5 h-4.5 stroke-2 ${isActive ? 'text-white' : themeColor}`} />
+      <span>{label}</span>
+      <span className={`ml-1 px-2.5 py-0.5 rounded-full text-[11px] font-black ${
+        isActive 
+          ? 'bg-white/20 text-white' 
+          : `bg-[#2D4030]/5 ${themeColor}`
+      }`}>
+        {count}
+      </span>
+    </button>
   );
 };

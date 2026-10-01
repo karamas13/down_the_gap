@@ -150,7 +150,7 @@ export const AboutGallery = () => {
               >
                 <div 
                   style={{ backgroundColor: 'rgba(45, 64, 48, 0.04)' }}
-                  className="relative w-full rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-auto"
+                  className="relative w-full rounded-2xl overflow-hidden aspect-4/3 sm:aspect-auto"
                 >
                   <Image
                     src={img.src}
@@ -196,7 +196,7 @@ export const AboutGallery = () => {
         createPortal(
           <AnimatePresence>
             {activeImageIndex !== null && galleryImages[activeImageIndex] && (
-              <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+              <div className="fixed inset-0 z-9999 flex items-center justify-center">
                 
                 {/* Backdrop */}
                 <motion.div

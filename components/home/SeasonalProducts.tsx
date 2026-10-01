@@ -4,8 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ProductCard } from '../products/ProductCard';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase'; // Προσαρμόστε το path του supabase client
-import { Product } from '@/types'; // Προσαρμόστε το path των Types σας
+import Image from 'next/image';
+import { supabase } from '@/lib/supabase'; 
+import { Product } from '@/types'; 
+import soilBg from '@/public/images/soil.avif'; 
+import { Broccoli } from 'lucide-react';
 
 export const SeasonalProducts = () => {
   const [seasonalProducts, setSeasonalProducts] = useState<Product[]>([]);
@@ -16,10 +19,11 @@ export const SeasonalProducts = () => {
       try {
         setIsLoading(true);
 
-        // Ανάκτηση όλων των προϊόντων από τη βάση
+        // Ανάκτηση ΜΟΝΟ των διαθέσιμων προϊόντων απευθείας από τη βάση
         const { data, error } = await supabase
           .from('products')
-          .select('*');
+          .select('*')
+          .eq('is_available', true);
 
         if (error) {
           console.error('Σφάλμα κατά την ανάκτηση προϊόντων:', error);
@@ -27,7 +31,7 @@ export const SeasonalProducts = () => {
         }
 
         if (data) {
-          // Μετατροπή με (item: any) για να αποφύγουμε TypeScript errors
+          // Μετατροπή των πεδίων στον τύπο Product
           const formattedProducts: Product[] = data.map((item: any) => ({
             id: String(item.id),
             title: item.title || '',
@@ -38,12 +42,8 @@ export const SeasonalProducts = () => {
             season: item.season || '',
           }));
 
-          // 🎯 ΑΥΣΤΗΡΟ ΦΙΛΤΡΑΡΙΣΜΑ: Κρατάμε ΜΟΝΟ τα διαθέσιμα (isAvailable === true) & έως 4 προϊόντα
-          const availableOnly = formattedProducts
-            .filter((product) => product.isAvailable === true)
-            .slice(0, 4);
-
-          setSeasonalProducts(availableOnly);
+          // Κρατάμε ΟΛΑ τα διαθέσιμα προϊόντα (χωρίς .slice)
+          setSeasonalProducts(formattedProducts);
         }
       } catch (err) {
         console.error('Απρόσμενο σφάλμα:', err);
@@ -56,19 +56,31 @@ export const SeasonalProducts = () => {
   }, []);
 
   return (
-    <section className="py-24 lg:py-32 bg-linear-to-b from-[#18231A] via-[#233326] to-[#18231A] text-[#FAF7F2] relative overflow-hidden">
+    <section className="py-24 lg:py-32 text-[#FAF7F2] relative overflow-hidden bg-[#18231A]">
+      {/* Background Image με Next.js Image Component */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={soilBg}
+          alt="Soil texture background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-30"
+        />
+        {/* Dark Gradient Overlay για διατήρηση της αναγνωσιμότητας του κειμένου */}
+        <div className="absolute inset-0 bg-linear-to-b from-[#18231A]/50 via-[#233326]/10 to-[#18231A]/50 mix-blend-multiply" />
+      </div>
+
       {/* Decorative Ambient Lighting & Glow Spheres */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-175 h-87.5 bg-[#E8A838]/10 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute top-10 right-10 w-96 h-96 bg-[#C86D51]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#2D4030]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-175 h-87.5 bg-[#E8A838]/10 rounded-full blur-[130px] pointer-events-none z-0" />
+      <div className="absolute top-10 right-10 w-96 h-96 bg-[#C86D51]/10 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#2D4030]/20 rounded-full blur-3xl pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-2xl">
-
-
             <h2 className="font-serif text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
               Φρέσκα Εποχιακά Προϊόντα
             </h2>
@@ -91,14 +103,14 @@ export const SeasonalProducts = () => {
         {isLoading ? (
           /* Loading Skeletons */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {[...Array(4)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <div 
                 key={i} 
                 className="h-95 rounded-3xl bg-white/5 border border-white/10 animate-pulse p-4 flex flex-col justify-between"
               >
                 <div className="w-full h-52 bg-white/10 rounded-2xl" />
                 <div className="space-y-3 my-4">
-                  <div className="h-5 bg-[#white]/10 rounded-md w-3/4" />
+                  <div className="h-5 bg-white/10 rounded-md w-3/4" />
                   <div className="h-3 bg-white/10 rounded-md w-full" />
                   <div className="h-3 bg-white/10 rounded-md w-2/3" />
                 </div>
@@ -107,15 +119,15 @@ export const SeasonalProducts = () => {
             ))}
           </div>
         ) : seasonalProducts.length > 0 ? (
-          /* Real Available Products Grid */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          /* Real Available Products Grid - Εμφανίζει ΟΛΑ τα διαθέσιμα */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {seasonalProducts.map((product, idx) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.12 }}
+                transition={{ duration: 0.4, delay: (idx % 4) * 0.1 }}
                 className="hover:-translate-y-1.5 transition-transform duration-300"
               >
                 <ProductCard product={product} />
@@ -141,15 +153,13 @@ export const SeasonalProducts = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-16 p-6 sm:p-8 bg-linear-to-r from-[#C86D51] via-[#b85e43] to-[#A34B32] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
+          className="mt-16 p-6 sm:p-8 bg-linear-to-r from-[#e4957d] via-[#ff845f] to-[#ff7650] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
         >
           {/* Ambient Glow */}
           <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-[#E8A838]/20 rounded-full blur-2xl pointer-events-none" />
 
           <div className="flex items-center gap-4 relative z-10">
-            <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl shrink-0 shadow-inner">
-              🌿
-            </div>
+            <Broccoli color="#008a29" className='size-10'/>
             <div>
               <h4 className="font-serif text-lg sm:text-xl font-bold text-white">
                 Εγγύηση Απολύτως Φρέσκου Προϊόντος
