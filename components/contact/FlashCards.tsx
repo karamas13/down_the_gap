@@ -123,7 +123,6 @@ export const FlashCards = () => {
       } finally {
         setIsSubmitting(false);
       }
-      // ----------------------------
     }
   };
 

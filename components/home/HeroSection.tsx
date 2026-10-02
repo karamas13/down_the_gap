@@ -68,7 +68,7 @@ export const HeroSection = () => {
       <div className="absolute top-1/2 right-0 w-48 h-48 sm:w-87.5 sm:h-87.5 rounded-full bg-[#2D4030]/10 blur-3xl pointer-events-none" />
 
       {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative z-10 mt-5">
         
         {/* Left Column */}
         <motion.div
@@ -100,7 +100,7 @@ export const HeroSection = () => {
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg sm:text-xl text-[#2D4030]/80 max-w-2xl leading-relaxed font-sans">
+          <p className="text-base sm:text-lg text-[#2D4030]/80 max-w-2xl leading-relaxed font-sans">
             Απευθείας από τη γη μας στην καρδιά της οικογένειάς σας. Καλλιεργούμε με μεράκι, σεβασμό στη φύση και 100% βιολογικές μεθόδους.
           </p>
 
@@ -123,19 +123,19 @@ export const HeroSection = () => {
           {/* Live Counting Stats Bar */}
           <div className="pt-6 sm:pt-8 border-t border-[#2D4030]/15 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg">
             <div>
-              <p className="font-serif text-xl sm:text-2xl sm:text-3xl font-bold text-[#2D4030]">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-[#2D4030]">
                 <AnimatedCounter from={0} to={100} suffix="%" duration={1.8} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium mt-0.5">Βιολογικά</p>
             </div>
             <div>
-              <p className="font-serif text-xl sm:text-2xl sm:text-3xl font-bold text-[#C86D51]">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-[#C86D51]">
                 <AnimatedCounter from={1900} to={1980} duration={2} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium mt-0.5">Έτος Ίδρυσης</p>
             </div>
             <div>
-              <p className="font-serif text-xl sm:text-2xl sm:text-3xl font-bold text-[#2D4030]">
+              <p className="font-serif text-xl sm:text-2xl font-bold text-[#2D4030]">
                 <AnimatedCounter from={0} to={24} suffix="h" duration={1.5} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium mt-0.5">Από τη Συγκομιδή</p>
@@ -144,7 +144,7 @@ export const HeroSection = () => {
         </motion.div>
 
         {/* Right Column: Permanent Static 3D Tilt Card */}
-        <div className="lg:col-span-5 relative mt-4 lg:mt-0 [perspective:1200px] w-full max-w-lg lg:max-w-none mx-auto">
+        <div className="lg:col-span-5 relative mt-4 lg:mt-0 perspective-distant w-full max-w-lg lg:max-w-none mx-auto">
           <motion.div
             ref={cardRef}
             onMouseMove={handleMouseMove}
@@ -160,7 +160,7 @@ export const HeroSection = () => {
             className="relative cursor-pointer"
           >
             {/* Main Image Frame */}
-            <div className="relative h-80 xs:h-96 sm:h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
+            <div className="relative h-80 xs:h-96 sm:h-120 lg:h-130 rounded-4xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
               <Image
                 src="/images/kalampoki4.avif"
                 alt="Καλλιέργεια Καλαμποκιού"
@@ -168,7 +168,7 @@ export const HeroSection = () => {
                 className="object-cover scale-105 hover:scale-100 transition-transform duration-700 ease-out"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2D4030]/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-[#2D4030]/40 via-transparent to-transparent" />
             </div>
 
             {/* Floating Badge 1: Sprout Icon (Replaced Emoji) */}

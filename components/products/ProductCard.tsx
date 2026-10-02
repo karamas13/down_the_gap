@@ -4,6 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Sprout, 
+  Hourglass, 
+  Sun, 
+  Snowflake, 
+  Leaf, 
+  ShoppingBasket, 
+  ArrowRight, 
+  X 
+} from 'lucide-react';
 import { Product } from '@/types';
 
 interface ProductCardProps {
@@ -115,7 +125,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* CARD FOOTER */}
         <div className="pt-4 mt-4 border-t border-[#2D4030]/10 flex items-center justify-between gap-2 px-1 shrink-0">
           <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#2D4030]/60 flex items-center gap-1.5">
-            {isAvailable ? '🌱 Φρέσκο' : '⏳ Αναμένεται'}
+            {isAvailable ? (
+              <>
+                <Sprout className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Φρέσκο</span>
+              </>
+            ) : (
+              <>
+                <Hourglass className="w-3.5 h-3.5 text-amber-600" />
+                <span>Αναμένεται</span>
+              </>
+            )}
           </span>
 
           <button
@@ -127,7 +147,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="px-3.5 py-1.5 bg-[#2D4030] group-hover:bg-[#C86D51] text-white text-xs font-bold rounded-xl transition-all duration-300 flex items-center gap-1 shadow-sm group-hover:shadow-md"
           >
             <span>Προβολή</span>
-            <span className="text-xs transition-transform group-hover:translate-x-0.5">→</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
           </button>
         </div>
       </motion.div>
@@ -164,7 +184,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-[#2D4030] font-black text-lg flex items-center justify-center transition-all shadow-md hover:scale-105 border border-[#2D4030]/10"
                     title="Κλείσιμο (Esc)"
                   >
-                    ✕
+                    <X className="w-5 h-5" />
                   </button>
 
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
@@ -191,8 +211,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                           </span>
                         )}
                         {season && (
-                          <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-[#2D4030] text-[11px] font-extrabold rounded-xl shadow-sm border border-white/50">
-                            {season === 'summer' ? '☀️ Θερινή Σοδειά' : '❄️ Χειμερινή Σοδειά'}
+                          <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-[#2D4030] text-[11px] font-extrabold rounded-xl shadow-sm border border-white/50 flex items-center gap-1.5">
+                            {season === 'summer' ? (
+                              <>
+                                <Sun className="w-3.5 h-3.5 text-amber-500" />
+                                <span>Θερινή Σοδειά</span>
+                              </>
+                            ) : (
+                              <>
+                                <Snowflake className="w-3.5 h-3.5 text-blue-500" />
+                                <span>Χειμερινή Σοδειά</span>
+                              </>
+                            )}
                           </span>
                         )}
                       </div>
@@ -238,16 +268,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#2D4030]/50 block">
                               Εποχικότητα
                             </span>
-                            <span className="text-xs font-bold text-[#2D4030] flex items-center gap-1 mt-0.5">
-                              {season === 'summer' ? '☀️ Καλοκαιρινό' : '❄️ Χειμερινό'}
+                            <span className="text-xs font-bold text-[#2D4030] flex items-center gap-1.5 mt-0.5">
+                              {season === 'summer' ? (
+                                <>
+                                  <Sun className="w-3.5 h-3.5 text-amber-500" />
+                                  <span>Καλοκαιρινό</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Snowflake className="w-3.5 h-3.5 text-blue-500" />
+                                  <span>Χειμερινό</span>
+                                </>
+                              )}
                             </span>
                           </div>
                           <div className="bg-[#FAF7F2] p-3 rounded-xl border border-[#2D4030]/10">
                             <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#2D4030]/50 block">
                               Καλλιέργεια
                             </span>
-                            <span className="text-xs font-bold text-[#2D4030] flex items-center gap-1 mt-0.5">
-                              🌿 100% Φυσική
+                            <span className="text-xs font-bold text-[#2D4030] flex items-center gap-1.5 mt-0.5">
+                              <Leaf className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>100% Φυσική</span>
                             </span>
                           </div>
                         </div>
@@ -255,21 +296,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                       </div>
 
                       {/* BOTTOM HIGHLIGHT & ACTIONS */}
-                      <div className="space-y-4 pt-2 border-t border-[#2D4030]/10">
-                        <div className="flex items-center gap-3 text-xs text-[#2D4030]/75 bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#2D4030]/10">
-                          <span className="text-2xl shrink-0">🧺</span>
-                          <p className="leading-snug">
-                            Συλλέγεται καθημερινά με φροντίδα και διατίθεται άμεσα στις λαϊκές αγορές της εβδομάδας.
-                          </p>
-                        </div>
-
+                      <div className="space-y-4 pt-2 border-t border-[#2D4030]/10">                        
                         <div className="flex items-center gap-3">
                           <a
                             href="/products"
                             className="flex-1 py-3.5 bg-[#2D4030] hover:bg-[#C86D51] text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all text-center shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                           >
                             <span>Δείτε όλα τα Προϊόντα</span>
-                            <span>→</span>
+                            <ArrowRight className="w-4 h-4" />
                           </a>
                           <button
                             type="button"

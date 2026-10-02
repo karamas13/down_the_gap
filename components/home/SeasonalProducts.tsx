@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ProductCard } from '../products/ProductCard';
 import Link from 'next/link';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase'; 
 import { Product } from '@/types'; 
-import soilBg from '@/public/images/soil.avif'; 
 import { Broccoli } from 'lucide-react';
 
 export const SeasonalProducts = () => {
@@ -19,7 +18,6 @@ export const SeasonalProducts = () => {
       try {
         setIsLoading(true);
 
-        // Ανάκτηση ΜΟΝΟ των διαθέσιμων προϊόντων απευθείας από τη βάση
         const { data, error } = await supabase
           .from('products')
           .select('*')
@@ -31,7 +29,6 @@ export const SeasonalProducts = () => {
         }
 
         if (data) {
-          // Μετατροπή των πεδίων στον τύπο Product
           const formattedProducts: Product[] = data.map((item: any) => ({
             id: String(item.id),
             title: item.title || '',
@@ -42,7 +39,6 @@ export const SeasonalProducts = () => {
             season: item.season || '',
           }));
 
-          // Κρατάμε ΟΛΑ τα διαθέσιμα προϊόντα (χωρίς .slice)
           setSeasonalProducts(formattedProducts);
         }
       } catch (err) {
@@ -56,25 +52,20 @@ export const SeasonalProducts = () => {
   }, []);
 
   return (
-    <section className="py-24 lg:py-32 text-[#FAF7F2] relative overflow-hidden bg-[#18231A]">
-      {/* Background Image με Next.js Image Component */}
+    <section className="py-24 lg:py-32 text-[#FAF6F0] relative overflow-hidden bg-[#1A120B]">
+      {/* Background Image Layer */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={soilBg}
+          src= "@/public/images/soil.avif"
           alt="Soil texture background"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center opacity-30"
+          className="object-cover object-center opacity-25"
         />
-        {/* Dark Gradient Overlay για διατήρηση της αναγνωσιμότητας του κειμένου */}
-        <div className="absolute inset-0 bg-linear-to-b from-[#18231A]/50 via-[#233326]/10 to-[#18231A]/50 mix-blend-multiply" />
+        {/* Dark Brown Gradient Overlay */}
+        <div className="absolute inset-0 bg-linear-to-b from-[#1A120B] via-[#2A1C14]/30 to-[#1A120B]/80" />
       </div>
-
-      {/* Decorative Ambient Lighting & Glow Spheres */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-175 h-87.5 bg-[#E8A838]/10 rounded-full blur-[130px] pointer-events-none z-0" />
-      <div className="absolute top-10 right-10 w-96 h-96 bg-[#C86D51]/10 rounded-full blur-3xl pointer-events-none z-0" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#2D4030]/20 rounded-full blur-3xl pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -85,7 +76,7 @@ export const SeasonalProducts = () => {
               Φρέσκα Εποχιακά Προϊόντα
             </h2>
 
-            <p className="text-base sm:text-lg text-white/75 mt-3 font-normal leading-relaxed">
+            <p className="text-base sm:text-lg text-white/80 mt-3 font-normal leading-relaxed">
               Συγκομίζονται καθημερινά από τα κτήματά μας και είναι διαθέσιμα για άμεση παραγγελία ή παραλαβή από τη λαϊκή.
             </p>
           </div>
@@ -101,7 +92,6 @@ export const SeasonalProducts = () => {
 
         {/* Product Cards Grid / Skeleton / Fallback */}
         {isLoading ? (
-          /* Loading Skeletons */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[...Array(8)].map((_, i) => (
               <div 
@@ -119,7 +109,6 @@ export const SeasonalProducts = () => {
             ))}
           </div>
         ) : seasonalProducts.length > 0 ? (
-          /* Real Available Products Grid - Εμφανίζει ΟΛΑ τα διαθέσιμα */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {seasonalProducts.map((product, idx) => (
               <motion.div
@@ -135,7 +124,6 @@ export const SeasonalProducts = () => {
             ))}
           </div>
         ) : (
-          /* Fallback σε περίπτωση που δεν υπάρχουν διαθέσιμα προϊόντα */
           <div className="text-center py-16 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 shadow-lg">
             <span className="text-4xl block mb-3">🌱</span>
             <h3 className="font-serif text-xl font-bold text-white">
@@ -153,18 +141,18 @@ export const SeasonalProducts = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-16 p-6 sm:p-8 bg-linear-to-r from-[#e4957d] via-[#ff845f] to-[#ff7650] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
+          className="mt-16 p-6 sm:p-8 bg-linear-to-r from-[#8B4513] via-[#B85B35] to-[#D97736] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
         >
           {/* Ambient Glow */}
           <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-[#E8A838]/20 rounded-full blur-2xl pointer-events-none" />
 
           <div className="flex items-center gap-4 relative z-10">
-            <Broccoli color="#008a29" className='size-10'/>
+            <Broccoli className="size-10 text-[#E8A838]" />
             <div>
               <h4 className="font-serif text-lg sm:text-xl font-bold text-white">
                 Εγγύηση Απολύτως Φρέσκου Προϊόντος
               </h4>
-              <p className="text-xs sm:text-sm text-white/85 mt-0.5 font-light">
+              <p className="text-xs sm:text-sm text-white/90 mt-0.5 font-light">
                 Όλα τα διαθέσιμα προϊόντα μαζεύονται εντός 24 ωρών πριν την παράδοση.
               </p>
             </div>
@@ -172,7 +160,7 @@ export const SeasonalProducts = () => {
 
           <Link
             href="/about"
-            className="px-6 py-3.5 bg-[#18231A] hover:bg-[#233326] text-[#E8A838] hover:text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 shrink-0 border border-[#E8A838]/30 relative z-10"
+            className="px-6 py-3.5 bg-[#1A120B] hover:bg-[#2A1C14] text-[#E8A838] hover:text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 shrink-0 border border-[#E8A838]/30 relative z-10"
           >
             Μάθετε για την Καλλιέργειά μας
           </Link>

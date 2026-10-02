@@ -41,7 +41,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#2D4030]">
       {/* Top Navigation */}
-      <header className="bg-[#2D4030] text-white px-8 py-5 flex items-center justify-between shadow-md">
+      <header className="bg-[#2D4030] text-white px-8 pt-30 pb-5 flex items-center justify-between shadow-md">
         <h1 className="font-serif text-2xl font-bold">Admin Dashboard</h1>
         <button
           onClick={handleLogout}

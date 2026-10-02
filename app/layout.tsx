@@ -1,12 +1,13 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { preload } from 'react-dom';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
-import { LoaderProvider } from '../components/LoaderProvider'; // Adjust relative path if needed
+import { LoaderProvider } from '../components/LoaderProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'DownTheGap | Οικογενειακή Φάρμα',
+  title: 'DownTheGap | Βιολογικές Καλλιέργειες',
   description: 'Φρέσκα βιολογικά προϊόντα απευθείας από τη φάρμα μας στο τραπέζι σας.',
 };
 
@@ -15,6 +16,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+ 
+  preload('/images/MainLogo.avif', { as: 'image' });
+  preload('/images/PepperBackground.avif', { as: 'image' });
+
+
   return (
     <html lang="el">
       <body className="bg-[#F9F6F0] text-[#2D4030] min-h-screen flex flex-col font-sans antialiased">

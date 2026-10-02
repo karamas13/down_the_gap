@@ -22,7 +22,7 @@ const SEASON_CONFIG = {
     badgeBg: 'bg-green-600/10 text-green-700',
     border: 'border-green-600/20',
     bannerTitle: 'Διαθέσιμα Τώρα',
-    bannerDesc: 'Φρέσκα λαχανικά που συλλέγονται αυτή τη στιγμή από τα κτήματά μας και είναι έτοιμα για παράδοση.',
+    bannerDesc: 'Φρέσκα λαχανικά που συλλέγονται αυτή τη στιγμή από τα κτήματά μας και είναι έτοιμα για κατανάλωση.',
     icon: CheckCircle2,
   },
   all: {
@@ -30,7 +30,7 @@ const SEASON_CONFIG = {
     badgeBg: 'bg-[#2D4030]/10 text-[#2D4030]',
     border: 'border-[#2D4030]/20',
     bannerTitle: 'Όλη η Σοδειά μας',
-    bannerDesc: 'Ανακαλύψτε το σύνολο των φρέσκων λαχανικών μας, καλλιεργημένων με απόλυτο σεβασμό στον κύκλο της φύσης.',
+    bannerDesc: 'Ανακαλύψτε το σύνολο των φρέσκων λαχανικών μας, καλλιεργημένων με 100% βιολογικές πρακτικές.',
     icon: Sprout,
   },
   summer: {
@@ -259,7 +259,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 animate-pulse">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-              <div key={n} className="bg-white/80 rounded-3xl h-[360px] border border-[#2D4030]/10 p-5 flex flex-col justify-between shadow-sm">
+              <div key={n} className="bg-white/80 rounded-3xl h-90 border border-[#2D4030]/10 p-5 flex flex-col justify-between shadow-sm">
                 <div className="bg-gray-200 h-52 rounded-2xl w-full"></div>
                 <div className="space-y-3 pt-5">
                   <div className="bg-gray-200 h-5 rounded-md w-3/4"></div>

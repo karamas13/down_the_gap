@@ -2,12 +2,12 @@
 const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
+    qualities: [25, 50, 75, 90, 100],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.supabase.co', // Ή το ακριβές hostname του Supabase project σας
+        hostname: '**.supabase.co', 
       },
-      // Αν χρησιμοποιείτε Unsplash ή άλλα external domains για δοκιμή:
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',

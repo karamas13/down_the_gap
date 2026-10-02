@@ -93,16 +93,30 @@ export const AboutGallery = () => {
 
   return (
     <section 
-      className="py-24 text-[#2D4030] relative overflow-hidden bg-linear-to-b from-[#ced7a9] via-[#bcca68] to-[#dfb241]"
-    >     
+      className="py-24 text-[#2D4030] relative overflow-hidden bg-linear-to-b from-[#121B15] via-[#ced7a9] to-[#dfb241]"
+    > 
+      {/* GRID LINES BACKGROUND OVERLAY */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.6) 1px, transparent 2px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 1px, transparent 2px)
+          `,
+          backgroundSize: '40px 40px',
+          maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)'
+        }}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="mb-14 max-w-2xl">       
-          <h2 className="font-serif text-3xl sm:text-5xl font-black text-[#2D4030] leading-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-black text-white leading-tight">
             Μια Ημέρα στο Κτήμα
           </h2>
-          <p className="text-sm sm:text-base text-[#2D4030]/80 font-light max-w-xl mt-3 leading-relaxed">
+          <p className="text-sm sm:text-base text-white/80 font-light max-w-xl mt-3 leading-relaxed">
             Στιγμιότυπα από την καθημερινή μας ενασχόληση με τη γη, τη φροντίδα των καλλιεργειών και την προετοιμασία της συγκομιδής.
           </p>
         </div>
@@ -113,7 +127,7 @@ export const AboutGallery = () => {
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <div 
                 key={n} 
-                style={{ backgroundColor: 'rgba(45, 64, 48, 0.05)', borderColor: 'rgba(45, 64, 48, 0.1)' }}
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.15)' }}
                 className="animate-pulse h-72 rounded-3xl w-full border" 
               />
             ))}

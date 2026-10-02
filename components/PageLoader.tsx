@@ -18,6 +18,14 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(isLoading);
 
+  // Preload logo image immediately into browser cache
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const img = new window.Image();
+      img.src = '/images/MainLogo.avif';
+    }
+  }, []);
+
   useEffect(() => {
     if (!isLoading) {
       setIsVisible(false);
@@ -47,7 +55,6 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
     return () => clearInterval(timer);
   }, [isLoading, duration, onComplete]);
 
-  // Αν το isLoading είναι εξαρχής false, μην επιστρέψεις ΚΑΝΕΝΑ HTML element
   if (!isLoading && !isVisible) {
     return null;
   }
@@ -116,7 +123,9 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
                   width={220}
                   height={80}
                   priority
-                  quality={100}
+                  unoptimized
+                  loading="eager"
+                  fetchPriority="high"
                   className="w-full h-auto object-contain drop-shadow-sm"
                 />
               </motion.div>

@@ -39,7 +39,7 @@ export const ProductHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="font-serif text-4xl sm:text-6xl font-black tracking-tight leading-tight"
+              className="font-serif text-4xl sm:text-6xl font-black tracking-tight leading-tight mt-20"
             >
               Οι Θησαυροί της Γης μας 
               <span className='text-transparent tracking-tight bg-clip-text bg-linear-to-r from-amber-200 via-purple-400 to-green-700'> σε Κάθε Εποχή</span>

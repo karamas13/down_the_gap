@@ -50,7 +50,7 @@ export const CoreValues = () => {
           className="object-cover object-center opacity-30 mix-blend-luminosity"
         />
         {/* Dark Natural Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-[#121B15]/80 via-[#19241C]/40 to-[#121B15]/80" />
+        <div className="absolute inset-0 bg-linear-to-b from-[#121B15] via-[#19241C]/40 to-[#121B15]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

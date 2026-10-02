@@ -10,9 +10,6 @@ export const ContactInfo = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#E8A838] block mb-2">
-            Άμεση Επικοινωνία
-          </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-black">
             Είμαστε Δίπλα Σας
           </h2>
