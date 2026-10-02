@@ -56,7 +56,7 @@ export const SeasonalProducts = () => {
       {/* Background Image Layer */}
       <div className="absolute inset-0 z-0">
         <Image
-          src= "@/public/images/soil.avif"
+          src= "/images/soil.avif"
           alt="Soil texture background"
           fill
           priority

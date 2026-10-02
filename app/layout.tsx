@@ -19,6 +19,7 @@ export default function RootLayout({
  
   preload('/images/MainLogo.avif', { as: 'image' });
   preload('/images/PepperBackground.avif', { as: 'image' });
+  preload('/images/kalampoki4.avif', { as: 'image' });
 
 
   return (
