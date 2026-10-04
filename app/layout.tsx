@@ -6,6 +6,7 @@ import { Footer } from '../components/layout/Footer';
 import { LoaderProvider } from '../components/LoaderProvider';
 import './globals.css';
 
+
 export const metadata: Metadata = {
   title: 'DownTheGap | Βιολογικές Καλλιέργειες',
   description: 'Φρέσκα βιολογικά προϊόντα απευθείας από τη φάρμα μας στο τραπέζι σας.',
@@ -17,10 +18,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
  
-  preload('/images/MainLogo.avif', { as: 'image' });
-  preload('/images/PepperBackground.avif', { as: 'image' });
-  preload('/images/kalampoki4.avif', { as: 'image' });
+  preload('/images/MainLogo.avif', { as: 'image', fetchPriority:'high' } as any);
+  preload('/images/PepperBackground.avif', { as: 'image', fetchPriority:'high' } as any);
+  preload('/images/Kalampoki4.avif', { 
+    as: 'image', 
+    fetchPriority: 'high' 
+  } as any);
 
+
+ 
 
   return (
     <html lang="el">

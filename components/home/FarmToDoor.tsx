@@ -30,18 +30,17 @@ export const FarmToDoor = () => {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-[#1E2B20] via-[#2D4030] to-[#19241B] text-[#F9F6F0] relative overflow-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-80 sm:h-96 bg-[#E8A838]/10 rounded-full blur-[120px] sm:blur-[140px] pointer-events-none" />
-      <div className="absolute -top-24 left-1/2 -translate-x-1/2 sm:left-10 sm:translate-x-0 w-60 h-60 sm:w-72 sm:h-72 bg-[#C86D51]/10 rounded-full blur-3xl pointer-events-none" />
+    <section className="py-16 sm:py-24 bg-linear-to-b from-[#1E2B20] via-[#2D4030] to-[#19241B] text-[#F9F6F0] relative overflow-hidden">
+      {/* Optimized Ambient Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl h-64 bg-[#E8A838]/10 rounded-full blur-2xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="text-center max-w-2xl mx-auto mb-12 sm:mb-20"
         >
           <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
@@ -55,10 +54,8 @@ export const FarmToDoor = () => {
 
         {/* Timeline Grid Container */}
         <div className="relative">
-          {/* Mobile Vertical Connecting Dotted Line */}
           <div className="block md:hidden absolute top-10 bottom-10 left-1/2 -translate-x-1/2 w-0.5 border-l-2 border-dashed border-[#E8A838]/30 pointer-events-none z-0" />
 
-          {/* Desktop Curved Dotted Connecting Line */}
           <div className="hidden md:block absolute top-10 left-[15%] right-[15%] h-12 pointer-events-none z-0">
             <svg className="w-full h-full overflow-visible" fill="none">
               <path
@@ -74,23 +71,18 @@ export const FarmToDoor = () => {
             {values.map((item, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.2 }}
-                className="flex flex-col items-center text-center group bg-[#1E2B20]/40 md:bg-transparent p-6 md:p-0 rounded-3xl md:rounded-none border border-white/5 md:border-none backdrop-blur-xs md:backdrop-blur-none"
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                className="flex flex-col items-center text-center group bg-[#1E2B20]/40 md:bg-transparent p-6 md:p-0 rounded-3xl md:rounded-none border border-white/5 md:border-none"
               >
                 {/* Icon Circle Node */}
                 <div className="relative mb-6 sm:mb-8 shrink-0">
-                  {/* Outer Pulsing Glow Effect */}
-                  <div className="absolute -inset-2 bg-gradient-to-r from-[#E8A838]/20 to-[#C86D51]/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  {/* Central Circle */}
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 group-hover:border-[#E8A838] text-[#E8A838] flex items-center justify-center relative z-10 shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:bg-[#E8A838] group-hover:text-[#2D4030]">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/10 border border-white/20 group-hover:border-[#E8A838] text-[#E8A838] flex items-center justify-center relative z-10 shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:bg-[#E8A838] group-hover:text-[#2D4030]">
                     {item.icon}
                   </div>
 
-                  {/* Step Badge */}
                   <span className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-1 px-2 sm:px-2.5 py-0.5 bg-[#C86D51] text-white font-mono text-[10px] sm:text-[11px] font-bold rounded-full shadow-md z-20 border border-[#2D4030]">
                     {item.step}
                   </span>

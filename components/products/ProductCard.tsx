@@ -75,9 +75,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="relative h-52 w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 shrink-0">
             <Image
               src={displayImage}
-              alt={title || 'Προϊόν Φάρμας'}
+              alt={title || 'Προϊόν'}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              quality={75}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className={`object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
                 !isAvailable ? 'grayscale-30 opacity-80' : ''
               }`}

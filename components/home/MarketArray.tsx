@@ -34,7 +34,6 @@ const DAYS_CONFIG: DayConfig[] = [
 type CategoryTab = 'athens' | 'corinth';
 
 export const MarketArray = () => {
-  const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<CategoryTab>('athens');
   const [athensMarkets, setAthensMarkets] = useState<Market[]>([]);
   const [corinthMarkets, setCorinthMarkets] = useState<Market[]>([]);
@@ -43,7 +42,6 @@ export const MarketArray = () => {
   const [todayLabel, setTodayLabel] = useState<string>('');
 
   useEffect(() => {
-    setMounted(true);
     const currentDayIdx = new Date().getDay();
     const currentDayObj = DAYS_CONFIG.find((d) => d.dayIndex === currentDayIdx) || DAYS_CONFIG[0];
     
@@ -52,17 +50,6 @@ export const MarketArray = () => {
 
     fetchAllMarkets();
   }, []);
-
-  useEffect(() => {
-    if (!loading && window.location.hash === '#marketarray') {
-      const element = document.getElementById('marketarray');
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-      }
-    }
-  }, [loading]);
 
   const mapMarketData = (data: any[]): Market[] => {
     return data.map((m) => ({
@@ -83,9 +70,11 @@ export const MarketArray = () => {
     try {
       setLoading(true);
 
+      const fields = 'id, day_code, day, location_name, address, hours, stand_info, is_organic_only, google_maps_url, is_active';
+
       const [corinthRes, athensRes] = await Promise.all([
-        supabase.from('markets_v2').select('*').order('id', { ascending: true }),
-        supabase.from('markets').select('*').order('id', { ascending: true }),
+        supabase.from('markets_v2').select(fields).order('id', { ascending: true }),
+        supabase.from('markets').select(fields).order('id', { ascending: true }),
       ]);
 
       if (!athensRes.error && athensRes.data) {
@@ -125,7 +114,7 @@ export const MarketArray = () => {
     return (
       <div
         key={market.id}
-        className={`group relative bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
+        className={`group relative bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
           isToday
             ? 'border-[#E8A838] shadow-md ring-2 ring-[#E8A838]/40'
             : 'border-[#3C281B]/10 shadow-sm hover:border-[#3C281B]/30'
@@ -200,16 +189,17 @@ export const MarketArray = () => {
       id="marketarray" 
       className="scroll-mt-28 py-20 lg:py-28 text-[#3C281B] relative overflow-hidden bg-[#1A120B]"
     >
-      {/* Background Image Layer */}
+      {/* Background Image Layer: lazy loading used */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/cropscloseup.avif"
-          alt="Πανοραμική θέα κτήματος"
-          fill
-          priority
-          className="object-cover object-center opacity-80"
-          sizes="100vw"
-        />
+  src="/images/cropscloseup.avif"
+  alt="Πανοραμική θέα κτήματος"
+  fill
+  loading="lazy"
+  quality={40}
+  sizes="(max-width: 640px) 480px, 100vw"
+  className="object-cover object-center opacity-80"
+/>
         <div className="absolute inset-0 bg-linear-to-b from-[#FAF6F0]/55 via-[#f0debf]/30 to-[#1A120B]" />
       </div>    
 
@@ -225,15 +215,8 @@ export const MarketArray = () => {
           </p>
         </div>
 
-        {/* Featured "Today" Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 bg-[#2A1C14]/90 backdrop-blur-md text-[#FAF6F0] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-white/10"
-        >
-          <div className="absolute -right-16 -top-16 w-72 h-72 bg-[#E8A838]/15 rounded-full blur-3xl pointer-events-none" />
-          
+        {/* Featured Today Card */}
+        <div className="mb-12 bg-[#2A1C14]/90 backdrop-blur-sm text-[#FAF6F0] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-white/10">
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#B85B35] text-white rounded-full text-xs font-bold uppercase tracking-wider shadow-md mb-6">
               <span className="w-2 h-2 rounded-full bg-[#E8A838] animate-pulse" />
@@ -260,11 +243,11 @@ export const MarketArray = () => {
                     </p>
                     
                     <div className="flex flex-wrap items-center gap-2 pt-2">
-                      <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-xl text-xs font-semibold text-white border border-white/10 flex items-center gap-1.5">
+                      <span className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-xl text-xs font-semibold text-white border border-white/10 flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-white/80" />
                         {market.hours}
                       </span>
-                      <span className="px-3 py-1 bg-[#E8A838]/20 backdrop-blur-md text-[#E8A838] rounded-xl text-xs font-bold border border-[#E8A838]/30 flex items-center gap-1.5">
+                      <span className="px-3 py-1 bg-[#E8A838]/20 backdrop-blur-sm text-[#E8A838] rounded-xl text-xs font-bold border border-[#E8A838]/30 flex items-center gap-1.5">
                         <MapPin className="w-3.5 h-3.5 text-[#E8A838]" />
                         Πόστο: {market.standInfo}
                       </span>
@@ -297,11 +280,11 @@ export const MarketArray = () => {
               </div>
             )}
           </div>
-        </motion.div>
+        </div>
 
         {/* Pill Navigation Bar */}
         <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1.5 bg-[#2A1C14]/85 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg">
+          <div className="inline-flex p-1.5 bg-[#2A1C14]/85 backdrop-blur-sm rounded-2xl border border-white/10 shadow-lg">
             <button
               onClick={() => setActiveTab('athens')}
               className={`relative px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-colors duration-200 flex items-center gap-2 ${
@@ -346,10 +329,10 @@ export const MarketArray = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {loading ? (
@@ -357,7 +340,7 @@ export const MarketArray = () => {
                 Φόρτωση προγράμματος...
               </div>
             ) : currentDisplayMarkets.length === 0 ? (
-              <div className="col-span-full text-center py-12 bg-white/95 backdrop-blur-md rounded-3xl border border-[#3C281B]/10 shadow-sm">
+              <div className="col-span-full text-center py-12 bg-white/95 backdrop-blur-sm rounded-3xl border border-[#3C281B]/10 shadow-sm">
                 <Store className="w-10 h-10 text-[#3C281B]/40 mx-auto mb-3" />
                 <h4 className="font-serif text-lg font-bold text-[#3C281B]">
                   Δεν υπάρχουν προγραμματισμένες λαϊκές σε αυτή την κατηγορία.
@@ -370,7 +353,7 @@ export const MarketArray = () => {
         </AnimatePresence>
 
         {/* Contact CTA Card */}
-        <div className="mt-14 p-8 bg-white/95 backdrop-blur-md rounded-3xl border border-[#3C281B]/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="mt-14 p-8 bg-white/95 backdrop-blur-sm rounded-3xl border border-[#3C281B]/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <ShoppingBasket className="w-10 h-10 text-[#3C281B] shrink-0" />
             <div>

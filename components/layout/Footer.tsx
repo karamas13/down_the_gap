@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Footer = () => {
   return (
@@ -14,40 +15,44 @@ export const Footer = () => {
           {/* Column 1: Brand / Logo */}
           <div className="flex flex-col items-center justify-center w-full space-y-3">
             <Link href="/" className="inline-block">
-              <img
-                src="/images/MainLogo.avif"
-                alt="DownTheGap Logo"
-                className="w-44 sm:w-52 md:w-56 h-auto block mx-auto"
-              />
+             <Image
+  src="/images/MainLogo.avif"
+  alt="Logo"
+  width={160}
+  height={85}
+  sizes="144px"
+  quality={60}
+  className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+/>
             </Link>
-            <p className="text-sm text-[#2D4030]/75 max-w-xs leading-relaxed mx-auto">
+            <p className="text-sm text-[#2D4030] max-w-xs leading-relaxed mx-auto">
               Αγνά, βιολογικά προϊόντα απευθείας από την οικογενειακή μας καλλιέργεια στο τραπέζι σας.
             </p>
           </div>
 
           {/* Column 2: Navigation */}
           <div className="flex flex-col items-center justify-center w-full">
-            <h5 className="font-bold text-xs uppercase tracking-widest text-[#C86D51] mb-4">
+            <h5 className="font-bold text-xs uppercase tracking-widest text-[#9C4328] mb-4">
               Πλοήγηση
             </h5>
-            <ul className="space-y-2.5 text-sm font-medium text-[#2D4030]/80">
+            <ul className="space-y-2.5 text-sm font-medium text-[#2D4030]">
               <li>
-                <Link href="/" className="hover:text-[#C86D51] transition-colors">
+                <Link href="/" className="hover:text-[#9C4328] transition-colors">
                   Αρχική
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#C86D51] transition-colors">
+                <Link href="/about" className="hover:text-[#9C4328] transition-colors">
                   Σχετικά με εμάς
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-[#C86D51] transition-colors">
+                <Link href="/products" className="hover:text-[#9C4328] transition-colors">
                   Προϊόντα
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#C86D51] transition-colors">
+                <Link href="/contact" className="hover:text-[#9C4328] transition-colors">
                   Επικοινωνία
                 </Link>
               </li>
@@ -56,20 +61,20 @@ export const Footer = () => {
 
           {/* Column 3: Contact */}
           <div className="flex flex-col items-center justify-center w-full">
-            <h5 className="font-bold text-xs uppercase tracking-widest text-[#C86D51] mb-4">
+            <h5 className="font-bold text-xs uppercase tracking-widest text-[#9C4328] mb-4">
               Επικοινωνία
             </h5>
-            <ul className="space-y-2.5 text-sm text-[#2D4030]/80">
+            <ul className="space-y-2.5 text-sm text-[#2D4030]">
               <li>
                 Τηλ:{' '}
-                <a href="tel:2235008057" className="hover:text-[#C86D51] transition-colors font-semibold">
+                <a href="tel:2235008057" className="hover:text-[#9C4328] transition-colors font-semibold">
                   +30 6981234567
                 </a>
               </li>
               <li>
                 Email:{' '}
-                <a href="mailto:info@downthegap.gr" className="hover:text-[#C86D51] transition-colors font-semibold">
-                  downthegapk@gmai.com
+                <a href="mailto:info@downthegap.gr" className="hover:text-[#9C4328] transition-colors font-semibold">
+                  downthegapk@gmail.com
                 </a>
               </li>
             </ul>
@@ -78,8 +83,8 @@ export const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="pt-6 text-center text-xs text-[#2D4030]/60">
-          <p>© {new Date().getFullYear()} DownTheGap. All Rights Reserved.</p>
+        <div className="pt-6 text-center text-xs text-[#2D4030]">
+          <p>© {new Date().getFullYear()} Κάτω απ' το αυλάκι. All Rights Reserved.</p>
         </div>
 
       </div>

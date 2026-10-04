@@ -44,15 +44,14 @@ export const Navbar = () => {
         <Link href="/" className="flex items-center group shrink-0 py-2">
           <div className="relative w-36 sm:w-48">
             <Image
-              src="/images/MainLogo.avif"
-              alt="DownTheGap Logo"
-              width={600}
-              height={200}
-              quality={100}
-              priority
-              sizes="(max-width: 640px) 144px, 192px"
-              className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
-            />
+  src="/images/MainLogo.avif"
+  alt="Logo"
+  width={200}
+  height={106}
+  sizes="176px"
+  quality={60}
+  className="w-44 sm:w-52 md:w-56 h-auto block mx-auto"
+/>
           </div>
         </Link>
 

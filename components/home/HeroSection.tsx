@@ -13,10 +13,8 @@ export const HeroSection = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth spring physics for active mouse tilt
   const springConfig = { damping: 25, stiffness: 150 };
   
-  // Maps mouse position relative to center [-0.5, 0.5] + static offset for permanent tilt
   const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, 0]), springConfig);
   const mouseRotateY = useSpring(useTransform(mouseX, [-0.1, 0.9], [-25, 2]), springConfig);
 
@@ -37,7 +35,7 @@ export const HeroSection = () => {
 
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-green-100 via-amber-200 to-red-100 py-12 sm:py-20 lg:py-28">
-      {/* 1. Subtle Organic Grid Overlay */}
+      {/* Organic Grid Overlay */}
       <div
         className="absolute inset-0 opacity-[0.035] pointer-events-none"
         style={{
@@ -46,7 +44,7 @@ export const HeroSection = () => {
         }}
       />
 
-      {/* 2. Topographic / Farm Contour SVG Lines (Restored Original SVGs) */}
+      {/* Light Contour SVG Lines */}
       <div className="absolute inset-0 pointer-events-none opacity-20 text-[#2D4030] overflow-hidden">
         <svg
           className="absolute -top-12 -left-12 w-[120%] h-[120%] stroke-current"
@@ -57,24 +55,21 @@ export const HeroSection = () => {
         >
           <path d="M-100,200 C200,100 400,350 700,200 C900,100 1100,250 1200,200" />
           <path d="M-100,400 C150,300 350,500 650,380 C850,280 1050,420 1200,350" />
-          <path d="M-100,600 C100,500 300,700 600,580 C800,480 1000,650 1200,550" />
-          <path d="M-100,800 C250,700 450,850 750,750 C950,680 1150,800 1200,720" />
         </svg>
       </div>
 
-      {/* 3. Dynamic Ambient Radial Glows */}
-      <div className="absolute top-0 right-1/4 -mt-20 w-72 h-72 sm:w-125 sm:h-125 rounded-full bg-[#E8A838]/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 sm:w-112.5 sm:h-112.5 rounded-full bg-[#C86D51]/15 blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 right-0 w-48 h-48 sm:w-87.5 sm:h-87.5 rounded-full bg-[#2D4030]/10 blur-3xl pointer-events-none" />
+      {/* Optimized Ambient Radial Glows */}
+      <div className="absolute top-0 right-1/4 -mt-20 w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#E8A838]/20 blur-2xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-56 h-56 sm:w-80 sm:h-80 rounded-full bg-[#C86D51]/15 blur-2xl pointer-events-none" />
 
       {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative z-10 mt-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative z-10 mt-20">
         
         {/* Left Column */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
           className="lg:col-span-7 space-y-6 sm:space-y-8 text-left"
         >
           <div className="inline-flex items-center gap-2 py-1 rounded-full">
@@ -85,7 +80,6 @@ export const HeroSection = () => {
             </span>
           </div>
 
-          {/* Dynamic Headline with SVG Accent */}
           <h1 className="font-serif text-3xl xs:text-4xl sm:text-6xl xl:text-7xl font-bold text-[#2D4030] leading-[1.15] sm:leading-[1.1] tracking-tight">
             Φρέσκα από τα Χωράφια μας στο{' '}
             <span className="relative inline-block text-[#C86D51]">
@@ -104,7 +98,6 @@ export const HeroSection = () => {
             Απευθείας από τη γη μας στην καρδιά της οικογένειάς σας. Καλλιεργούμε με μεράκι, σεβασμό στη φύση και 100% βιολογικές μεθόδους.
           </p>
 
-          {/* CTA Actions Group */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
             <Link
               href="/products"
@@ -120,30 +113,29 @@ export const HeroSection = () => {
             </Link>
           </div>
 
-          {/* Live Counting Stats Bar */}
           <div className="pt-6 sm:pt-8 border-t border-[#2D4030]/15 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg">
             <div>
               <p className="font-serif text-xl sm:text-2xl font-bold text-[#2D4030]">
-                <AnimatedCounter from={0} to={100} suffix="%" duration={1.8} />
+                <AnimatedCounter from={0} to={100} suffix="%" duration={1.5} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium mt-0.5">Βιολογικά</p>
             </div>
             <div>
               <p className="font-serif text-xl sm:text-2xl font-bold text-[#C86D51]">
-                <AnimatedCounter from={1900} to={1980} duration={2} />
+                <AnimatedCounter from={1900} to={1980} duration={1.5} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium mt-0.5">Έτος Ίδρυσης</p>
             </div>
             <div>
               <p className="font-serif text-xl sm:text-2xl font-bold text-[#2D4030]">
-                <AnimatedCounter from={0} to={24} suffix="h" duration={1.5} />
+                <AnimatedCounter from={0} to={24} suffix="h" duration={1.2} />
               </p>
               <p className="text-xs text-[#2D4030]/70 font-medium mt-0.5">Από τη Συγκομιδή</p>
             </div>
           </div>
         </motion.div>
 
-        {/* Right Column: Permanent Static 3D Tilt Card */}
+        {/* Right Column: LCP Hero Image Container */}
         <div className="lg:col-span-5 relative mt-4 lg:mt-0 perspective-distant w-full max-w-lg lg:max-w-none mx-auto">
           <motion.div
             ref={cardRef}
@@ -154,24 +146,25 @@ export const HeroSection = () => {
               rotateY: mouseRotateY,
               transformStyle: 'preserve-3d',
             }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="relative cursor-pointer"
           >
-            {/* Main Image Frame */}
+            {/* LCP Target Image with Explicit Responsive Sizes */}
             <div className="relative h-80 xs:h-96 sm:h-120 lg:h-130 rounded-4xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
-              <Image
-                src="/images/kalampoki4.avif"
-                alt="Καλλιέργεια Καλαμποκιού"
-                fill
-                className="object-cover scale-105 hover:scale-100 transition-transform duration-700 ease-out"
-                priority
-              />
+            <Image
+              src="/images/Kalampoki4.avif"
+              alt="Καλλιέργεια Καλαμποκιού"
+              fill
+              priority
+              
+              fetchPriority="high"
+              sizes="(max-width: 496px) 372px, (max-width: 1024px) 45vw, 500px"
+              quality={75}
+              className="object-cover"
+            />
               <div className="absolute inset-0 bg-linear-to-t from-[#2D4030]/40 via-transparent to-transparent" />
             </div>
 
-            {/* Floating Badge 1: Sprout Icon (Replaced Emoji) */}
+            {/* Floating Badges */}
             <motion.div
               style={{ transform: 'translateZ(45px)' }}
               className="absolute -top-4 -left-2 xs:-left-4 sm:-left-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl shadow-xl border border-white/60 flex items-center gap-2.5 sm:gap-3"
@@ -187,7 +180,6 @@ export const HeroSection = () => {
               </div>
             </motion.div>
 
-            {/* Floating Badge 2: Star Icon (Replaced Emoji) */}
             <motion.div
               style={{ transform: 'translateZ(55px)' }}
               className="absolute -bottom-4 -right-2 xs:-right-4 sm:-right-6 bg-[#2D4030]/95 backdrop-blur-md text-[#F9F6F0] p-3 sm:p-4 rounded-2xl shadow-2xl border border-white/10 flex items-center gap-3"

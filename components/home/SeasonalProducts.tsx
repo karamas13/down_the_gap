@@ -1,6 +1,6 @@
 'use client';
 
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ProductCard } from '../products/ProductCard';
 import Link from 'next/link';
@@ -20,8 +20,9 @@ export const SeasonalProducts = () => {
 
         const { data, error } = await supabase
           .from('products')
-          .select('*')
-          .eq('is_available', true);
+          .select('id, title, description, image_url, is_available, category, season')
+          .eq('is_available', true)
+          .limit(8);
 
         if (error) {
           console.error('Σφάλμα κατά την ανάκτηση προϊόντων:', error);
@@ -33,8 +34,8 @@ export const SeasonalProducts = () => {
             id: String(item.id),
             title: item.title || '',
             description: item.description || '',
-            imageUrl: item.image_url || item.imageUrl || '',
-            isAvailable: Boolean(item.is_available ?? item.isAvailable ?? false),
+            imageUrl: item.image_url || '',
+            isAvailable: Boolean(item.is_available ?? false),
             category: item.category || '',
             season: item.season || '',
           }));
@@ -53,17 +54,17 @@ export const SeasonalProducts = () => {
 
   return (
     <section className="py-24 lg:py-32 text-[#FAF6F0] relative overflow-hidden bg-[#1A120B]">
-      {/* Background Image Layer */}
+      {/* Background Image Layer: priority removed to prevent network blocking */}
       <div className="absolute inset-0 z-0">
         <Image
-          src= "/images/soil.avif"
-          alt="Soil texture background"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-25"
-        />
-        {/* Dark Brown Gradient Overlay */}
+  src="/images/soil.avif"
+  alt="Soil texture background"
+  fill
+  loading="lazy"
+  quality={35}
+  sizes="(max-width: 640px) 480px, 100vw"
+  className="object-cover object-center opacity-25"
+/>
         <div className="absolute inset-0 bg-linear-to-b from-[#1A120B] via-[#2A1C14]/30 to-[#1A120B]/80" />
       </div>
 
@@ -93,7 +94,7 @@ export const SeasonalProducts = () => {
         {/* Product Cards Grid / Skeleton / Fallback */}
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(4)].map((_, i) => (
               <div 
                 key={i} 
                 className="h-95 rounded-3xl bg-white/5 border border-white/10 animate-pulse p-4 flex flex-col justify-between"
@@ -102,7 +103,6 @@ export const SeasonalProducts = () => {
                 <div className="space-y-3 my-4">
                   <div className="h-5 bg-white/10 rounded-md w-3/4" />
                   <div className="h-3 bg-white/10 rounded-md w-full" />
-                  <div className="h-3 bg-white/10 rounded-md w-2/3" />
                 </div>
                 <div className="h-8 bg-white/10 rounded-xl w-full" />
               </div>
@@ -113,10 +113,10 @@ export const SeasonalProducts = () => {
             {seasonalProducts.map((product, idx) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: (idx % 4) * 0.1 }}
+                transition={{ duration: 0.3, delay: (idx % 4) * 0.08 }}
                 className="hover:-translate-y-1.5 transition-transform duration-300"
               >
                 <ProductCard product={product} />
@@ -140,12 +140,9 @@ export const SeasonalProducts = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.4 }}
           className="mt-16 p-6 sm:p-8 bg-linear-to-r from-[#8B4513] via-[#B85B35] to-[#D97736] text-white rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden border border-white/10"
         >
-          {/* Ambient Glow */}
-          <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-[#E8A838]/20 rounded-full blur-2xl pointer-events-none" />
-
           <div className="flex items-center gap-4 relative z-10">
             <Broccoli className="size-10 text-[#E8A838]" />
             <div>
@@ -160,7 +157,7 @@ export const SeasonalProducts = () => {
 
           <Link
             href="/about"
-            className="px-6 py-3.5 bg-[#1A120B] hover:bg-[#2A1C14] text-[#E8A838] hover:text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 shrink-0 border border-[#E8A838]/30 relative z-10"
+            className="px-6 py-3.5 bg-[#1A120B] hover:bg-[#2A1C14] text-[#E8A838] hover:text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all shadow-lg hover:shadow-xl shrink-0 border border-[#E8A838]/30 relative z-10"
           >
             Μάθετε για την Καλλιέργειά μας
           </Link>

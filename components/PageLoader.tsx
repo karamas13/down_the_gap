@@ -66,7 +66,7 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.03 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#FAF7F2] text-[#2D4030] overflow-hidden select-none"
+          className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-[#FAF7F2] text-[#2D4030] overflow-hidden select-none"
         >
           {/* Subtle Ambient Background Glowing Spheres */}
           <motion.div
@@ -75,7 +75,7 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
               opacity: [0.15, 0.25, 0.15],
             }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#E8A838]/20 rounded-full blur-3xl pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-[#E8A838]/20 rounded-full blur-3xl pointer-events-none"
           />
           <motion.div
             animate={{
@@ -83,7 +83,7 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
               opacity: [0.1, 0.2, 0.1],
             }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#C86D51]/15 rounded-full blur-3xl pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-100 h-100 bg-[#C86D51]/15 rounded-full blur-3xl pointer-events-none"
           />
 
           <div className="relative z-10 flex flex-col items-center">
