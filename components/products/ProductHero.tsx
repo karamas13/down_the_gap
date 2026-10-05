@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 
 export const ProductHero = () => {
   return (
@@ -12,11 +11,11 @@ export const ProductHero = () => {
           src="/images/fill3.avif"
           alt="Product Hero Background"
           fill
-          priority 
+          priority
+          fetchPriority="high"
           sizes="100vw" 
-          quality={75} 
+          quality={65} 
           placeholder="blur"
-          // Ελαφρύ SVG blur data-url για ακαριαία εμφάνιση φόντου πριν φορτώσει η εικόνα
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDQwMzAiLz48L3N2Zz4="
           className="object-cover object-center pointer-events-none"
         />
@@ -35,32 +34,21 @@ export const ProductHero = () => {
           {/* Main Text & Headlines */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">      
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="font-serif text-4xl sm:text-6xl font-black tracking-tight leading-tight mt-20"
-            >
-              Οι Θησαυροί της Γης μας 
-              <span className='text-transparent tracking-tight bg-clip-text bg-linear-to-r from-amber-200 via-purple-400 to-green-700'> σε Κάθε Εποχή</span>
-            </motion.h1>
+            {/* Standard HTML H1 for instant unblocked LCP candidate evaluation */}
+            <h1 className="font-serif text-4xl sm:text-6xl font-black tracking-tight leading-tight mt-12 sm:mt-20">
+              Οι Θησαυροί της Γης μας{' '}
+              <span className="text-transparent tracking-tight bg-clip-text bg-linear-to-r from-amber-200 via-purple-400 to-green-700">
+                σε Κάθε Εποχή
+              </span>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base sm:text-lg text-[#FAF7F2]/95 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
-            >
+            {/* True LCP Target Paragraph: Direct paint without opacity/delay blocks */}
+            <p className="text-base sm:text-lg text-[#FAF7F2]/95 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
               Η παραγωγή μας βασίζεται στην υπαίθρια καλλιέργεια και καλύπτει μια ευρεία γκάμα προϊόντων τόσο για τη θερινή όσο και για τη χειμερινή περίοδο. Στις θερινές καλλιέργειες μας θα βρείτε ντόπιες ντομάτες, αγγούρια, κολοκύθια, πιπεριές, μελιτζάνες, καλαμπόκι, μαρούλια, κρεμμύδια και πολλά ακόμη. Για τον χειμώνα, έχουμε μπρόκολα, κουνουπίδια, γογγυλοκράμβη (γουλί-ρεβά), λάχανα και άλλα φρέσκα προϊόντα από τις καλλιέργειές μας.
-            </motion.p>
+            </p>
 
             {/* Quick Stats Grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg mx-auto lg:mx-0"
-            >
+            <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg mx-auto lg:mx-0">
               <div>
                 <span className="block font-serif text-2xl sm:text-3xl font-black text-[#E8A838]">0%</span>
                 <span className="text-xs text-[#FAF7F2]/70 font-sans">Χημικά & Λιπάσματα</span>
@@ -73,44 +61,36 @@ export const ProductHero = () => {
                 <span className="block font-serif text-2xl sm:text-3xl font-black text-[#E8A838]">2</span>
                 <span className="text-xs text-[#FAF7F2]/70 font-sans">Εποχιακοί Κύκλοι</span>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Feature Badge Cards Layout */}
           <div className="lg:col-span-5 flex flex-col gap-4">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex items-start gap-4 hover:bg-white/10 transition-colors"
-            >
+            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex items-start gap-4 hover:bg-white/10 transition-colors">
               <div className="p-3 rounded-2xl bg-[#C86D51]/20 text-[#C86D51] text-2xl shrink-0">
                 ☀️
               </div>
               <div>
-                <h3 className="font-serif text-lg font-bold">Θερινή Σοδειά</h3>
+                {/* Changed from <h3> to <h2> to maintain sequential h1 -> h2 hierarchy */}
+                <h2 className="font-serif text-lg font-bold">Θερινή Σοδειά</h2>
                 <p className="text-xs text-[#FAF7F2]/75 mt-1 leading-relaxed">
                   Γλυκές ντομάτες, δροσερά αγγούρια, μελιτζάνες και καρποί γεμάτοι από τον καλοκαιρινό ήλιο.
                 </p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex items-start gap-4 hover:bg-white/10 transition-colors"
-            >
+            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex items-start gap-4 hover:bg-white/10 transition-colors">
               <div className="p-3 rounded-2xl bg-blue-500/20 text-blue-300 text-2xl shrink-0">
                 ❄️
               </div>
               <div>
-                <h3 className="font-serif text-lg font-bold">Χειμερινή Σοδειά</h3>
+                {/* Changed from <h3> to <h2> to maintain sequential h1 -> h2 hierarchy */}
+                <h2 className="font-serif text-lg font-bold">Χειμερινή Σοδειά</h2>
                 <p className="text-xs text-[#FAF7F2]/75 mt-1 leading-relaxed">
                   Πλούσια μπρόκολα, τραγανά κουνουπίδια, κρεμμυδάκι φρέσκο και εσπεριδοειδή γεμάτα βιταμίνες.
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
         </div>
