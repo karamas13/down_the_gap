@@ -16,14 +16,14 @@ export const Footer = () => {
           <div className="flex flex-col items-center justify-center w-full space-y-3">
             <Link href="/" className="inline-block">
              <Image
-  src="/images/MainLogo.avif"
-  alt="Logo"
-  width={160}
-  height={85}
-  sizes="144px"
-  quality={60}
-  className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-/>
+               src="/images/MainLogo.avif"
+               alt="Logo"
+               width={160}
+               height={85}
+               sizes="144px"
+               quality={60}
+               className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+             />
             </Link>
             <p className="text-sm text-[#2D4030] max-w-xs leading-relaxed mx-auto">
               Αγνά, βιολογικά προϊόντα απευθείας από την οικογενειακή μας καλλιέργεια στο τραπέζι σας.
@@ -32,9 +32,9 @@ export const Footer = () => {
 
           {/* Column 2: Navigation */}
           <div className="flex flex-col items-center justify-center w-full">
-            <h5 className="font-bold text-xs uppercase tracking-widest text-[#9C4328] mb-4">
+            <h1 className="font-bold text-xs uppercase tracking-widest text-[#9C4328] mb-4">
               Πλοήγηση
-            </h5>
+            </h1>
             <ul className="space-y-2.5 text-sm font-medium text-[#2D4030]">
               <li>
                 <Link href="/" className="hover:text-[#9C4328] transition-colors">
@@ -61,9 +61,9 @@ export const Footer = () => {
 
           {/* Column 3: Contact */}
           <div className="flex flex-col items-center justify-center w-full">
-            <h5 className="font-bold text-xs uppercase tracking-widest text-[#9C4328] mb-4">
+            <h1 className="font-bold text-xs uppercase tracking-widest text-[#9C4328] mb-4">
               Επικοινωνία
-            </h5>
+            </h1>
             <ul className="space-y-2.5 text-sm text-[#2D4030]">
               <li>
                 Τηλ:{' '}

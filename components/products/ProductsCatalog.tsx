@@ -11,12 +11,10 @@ interface ProductsCatalogProps {
   products?: Product[];
 }
 
-// Προσθήκη του 'available' στις επιλογές φίλτρου
 type SeasonFilter = 'available' | 'all' | 'summer' | 'winter';
 
-// Θεματικές ρυθμίσεις ανά εποχή/κατάσταση με Radial Gradient από το κέντρο
+// Θεματικές ρυθμίσεις ανά εποχή/κατάσταση με Radial Gradient central gradient bg 
 const SEASON_CONFIG = {
-  // Νέα ρύθμιση για τα διαθέσιμα προϊόντα - Ζωντανό πράσινο
   available: {
     bgRadial: 'radial-gradient(circle at center, rgba(34, 197, 94, 0.35) 25%, rgba(245, 240, 230, 0.85) 55%, #FAF7F2 100%)',
     badgeBg: 'bg-green-600/10 text-green-700',
@@ -54,14 +52,14 @@ const SEASON_CONFIG = {
 export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: initialProducts }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts || []);
   const [loading, setLoading] = useState<boolean>(!initialProducts || initialProducts.length === 0);
-  // Θέτουμε το 'available' ως default selected tab
+  //Default selected tab
   const [activeSeason, setActiveSeason] = useState<SeasonFilter>('available');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const currentTheme = SEASON_CONFIG[activeSeason];
   const IconBanner = currentTheme.icon;
 
-  // Fetch προϊόντων από το Supabase αν δεν έχουν δοθεί ως props
+  // Fetch προϊόντων από Supabase
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
       setProducts(initialProducts);
@@ -101,7 +99,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
     fetchProductsFromBackend();
   }, [initialProducts]);
 
-  // Υπολογισμός πλήθους προϊόντων ανά κατηγορία/εποχή
+  // Υπολογισμός αριθμού προϊόντων ανά κατηγορία
   const counts = useMemo(() => {
     return {
       all: products.length,
@@ -118,10 +116,8 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
       if (activeSeason === 'all') {
         matchesTab = true;
       } else if (activeSeason === 'available') {
-        // Το tab "Διαθέσιμα" δείχνει μόνο όσα είναι όντως διαθέσιμα, ανεξαρτήτως season
         matchesTab = product.isAvailable === true;
       } else {
-        // Τα tabs season δείχνουν όλα τα προϊόντα της season (διαθέσιμα και μη)
         matchesTab = product.season === activeSeason;
       }
 
@@ -135,7 +131,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
   }, [products, activeSeason, searchQuery]);
 
   const handleResetFilters = () => {
-    // Επαναφορά στο default tab "Διαθέσιμα"
+    // Επαναφορά στο default tab 
     setActiveSeason('available');
     setSearchQuery('');
   };
@@ -174,7 +170,7 @@ export const ProductsCatalog: React.FC<ProductsCatalogProps> = ({ products: init
             {/* Quick Count Badge */}
             <div className="shrink-0 bg-white px-5 py-3 rounded-2xl border border-[#2D4030]/10 text-center shadow-xs w-full md:w-auto">
               <span className="block text-3xl font-serif font-black">{filteredProducts.length}</span>
-              <span className="text-[11px] font-bold text-[#2D4030]/60 uppercase tracking-wider">Λαχανικά</span>
+              <span className="text-[11px] font-bold text-[#2D4030] uppercase tracking-wider">Λαχανικά</span>
             </div>
           </motion.div>
         </AnimatePresence>
