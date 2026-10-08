@@ -35,15 +35,12 @@ export const ContactInfo = () => {
               <span className="text-[11px] font-black uppercase tracking-wider text-[#FDE047] block mb-1">
                 Τηλεφωνικα
               </span>
-              <h3 className="font-serif text-2xl font-bold mb-2 text-white">Καλέστε μας</h3>
-              <p className="text-xs text-[#FAF7F2] font-normal leading-relaxed mb-6">
-                Δευτέρα έως Σάββατο: 08:00 - 18:00
-              </p>
+              <h3 className="font-serif text-2xl font-bold mb-2 text-white">Καλέστε μας</h3>              
               <a
-                href="tel:+302100000000"
+                href="tel:+30 6943200685"
                 className="text-lg font-bold text-white hover:text-[#FDE047] transition-colors block font-mono"
               >
-                +30 210 000 0000
+                +30 6943200685
               </a>
             </div>
             

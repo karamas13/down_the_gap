@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sprout, 
@@ -22,8 +24,12 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   const { title, description, imageUrl, isAvailable, category, season } = product;
+
+  // Έλεγχος αν ο χρήστης βρίσκεται ήδη στη σελίδα των προϊόντων
+  const isProductsPage = pathname?.startsWith('/products');
 
   useEffect(() => {
     setMounted(true);
@@ -67,7 +73,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* UPPER SECTION: IMAGE & BADGES */}
         <div>
           <div className="relative h-52 w-full rounded-2xl overflow-hidden bg-[#2D4030]/5 shrink-0">
-            {/* Native lazy loading applied automatically by next/image */}
             <Image
               src={displayImage}
               alt={title || 'Προϊόν'}
@@ -100,7 +105,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               </div>
 
               {category && (
-                /* Enhanced contrast: Solid background badge `#121B15` */
                 <span className="pointer-events-auto truncate max-w-27.5 px-2.5 py-1 bg-[#121B15] text-white text-[10px] font-bold uppercase tracking-wider rounded-lg border border-white/20 shadow-sm">
                   {category}
                 </span>
@@ -109,12 +113,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
 
           <div className="pt-4 px-1 space-y-2">
-            {/* Heading Level set to H3 for correct descending sequence */}
             <h3 className="font-serif text-lg font-extrabold text-[#121B15] group-hover:text-[#C86D51] transition-colors leading-snug line-clamp-1">
               {title}
             </h3>
 
-            {/* Enhanced contrast: bumped opacity from 70% to 85% (#2D4030) */}
             <p className="text-xs text-[#2D4030]/85 leading-relaxed font-sans line-clamp-2 min-h-9 font-normal">
               {description}
             </p>
@@ -123,7 +125,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* CARD FOOTER */}
         <div className="pt-4 mt-4 border-t border-[#2D4030]/15 flex items-center justify-between gap-2 px-1 shrink-0">
-          {/* Enhanced contrast: dark green text (#1E2C22) instead of light opacity */}
           <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#1E2C22] flex items-center gap-1.5">
             {isAvailable ? (
               <>
@@ -247,7 +248,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                         <div className="h-1 w-16 bg-[#C86D51] rounded-full" />
 
-                        {/* Enhanced contrast ratio for long text description */}
                         <p className="text-sm sm:text-base text-[#1E2C22] leading-relaxed font-sans max-h-48 overflow-y-auto pr-2">
                           {description || 'Δεν υπάρχει διαθέσιμη αναλυτική περιγραφή για αυτό το προϊόν.'}
                         </p>
@@ -285,17 +285,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                       <div className="space-y-4 pt-2 border-t border-[#2D4030]/15">        
                         <div className="flex items-center gap-3">
-                          <a
-                            href="/products"
-                            className="flex-1 py-3.5 bg-[#2D4030] hover:bg-[#C86D51] text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all text-center shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-                          >
-                            <span>Δείτε όλα τα Προϊόντα</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </a>
+                          {/* Εμφάνιση του Link μόνο αν ΔΕΝ είμαστε στη σελίδα των προϊόντων */}
+                          {!isProductsPage && (
+                            <Link
+                              href="/products"
+                              onClick={() => setIsOpen(false)}
+                              className="flex-1 py-3.5 bg-[#2D4030] hover:bg-[#C86D51] text-white font-extrabold text-xs sm:text-sm rounded-2xl transition-all text-center shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                            >
+                              <span>Δείτε όλα τα Προϊόντα</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </Link>
+                          )}
                           <button
                             type="button"
                             onClick={() => setIsOpen(false)}
-                            className="px-5 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-900 font-bold text-xs sm:text-sm rounded-2xl transition-colors"
+                            className={`${
+                              isProductsPage ? 'w-full' : 'px-5'
+                            } py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-900 font-bold text-xs sm:text-sm rounded-2xl transition-colors`}
                           >
                             Κλείσιμο
                           </button>

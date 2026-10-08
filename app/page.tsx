@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     'κόρινθος',
     'αθήνα',
     'βιολογικές αγορές',
+    'kato apo to aylaki',
   ],
   alternates: {
     canonical: 'https://katoapotoaylaki.gr',

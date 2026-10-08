@@ -209,7 +209,6 @@ export const FlashCards = () => {
                     className="space-y-6"
                   >
                     <div>
-                      {/* Darker terracotta tone `#B05438` for WCAG AA ratio on white */}
                       <span className="text-xs font-black uppercase tracking-widest text-[#B05438] block mb-1">
                         Γνωριμία
                       </span>

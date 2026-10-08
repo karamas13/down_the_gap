@@ -1,8 +1,10 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FaInstagram } from 'react-icons/fa';
+
+
 
 export const Footer = () => {
   return (
@@ -68,13 +70,19 @@ export const Footer = () => {
               <li>
                 Τηλ:{' '}
                 <a href="tel:2235008057" className="hover:text-[#9C4328] transition-colors font-semibold">
-                  +30 6981234567
+                  +30 6943200685
                 </a>
               </li>
               <li>
                 Email:{' '}
                 <a href="mailto:info@downthegap.gr" className="hover:text-[#9C4328] transition-colors font-semibold">
                   downthegapk@gmail.com
+                </a>
+              </li>
+              <li>
+                Instagram:{' '}
+                <a href="https://www.instagram.com/downofthegapbio/" target='_blank' className="hover:text-[#9C4328] transition-colors font-semibold flex justify-center items-center gap-2 py-1">
+                  <FaInstagram /> DownTheGap
                 </a>
               </li>
             </ul>

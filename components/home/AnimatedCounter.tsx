@@ -1,9 +1,7 @@
 'use client';
 
-
-import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
-
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { motion, useMotionValue, animate, useInView } from 'framer-motion';
 
 interface CounterProps {
   from?: number;
@@ -13,21 +11,39 @@ interface CounterProps {
   duration?: number;
 }
 
-export const AnimatedCounter = ({ from = 0, to, suffix = '', prefix = '', duration = 2 }: CounterProps) => {
-  const ref = React.useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+export const AnimatedCounter = ({
+  from = 0,
+  to,
+  suffix = '',
+  prefix = '',
+  duration = 2,
+}: CounterProps) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  
+  // Αλλαγή margin σε θετικό/μηδενικό ώστε να πυροδοτείται αμέσως στα mobile
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -20px 0px' });
   const count = useMotionValue(from);
-  const rounded = useTransform(count, (latest) => `${prefix}${Math.floor(latest)}${suffix}`);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isInView) {
       const controls = animate(count, to, {
         duration,
-        ease: "easeOut",
+        ease: 'easeOut',
+        onUpdate(value) {
+          if (ref.current) {
+            ref.current.textContent = `${prefix}${Math.round(value)}${suffix}`;
+          }
+        },
       });
-      return controls.stop;
+      return () => controls.stop();
     }
-  }, [isInView, count, to, duration]);
+  }, [isInView, count, to, duration, prefix, suffix]);
 
-  return <motion.span ref={ref}>{rounded}</motion.span>;
+  return (
+    <span ref={ref}>
+      {prefix}
+      {from}
+      {suffix}
+    </span>
+  );
 };

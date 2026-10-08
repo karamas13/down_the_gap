@@ -8,8 +8,8 @@ import './globals.css';
 
 
 export const metadata: Metadata = {
-  title: 'DownTheGap | Βιολογικές Καλλιέργειες',
-  description: 'Φρέσκα βιολογικά προϊόντα απευθείας από τη φάρμα μας στο τραπέζι σας.',
+  title: 'Κάτο Από Το Αυλάκι | Βιολογικές Καλλιέργειες',
+  description: 'Φρέσκα βιολογικά προϊόντα απευθείας από τις καλλιέργειές μας στο τραπέζι σας.',
 };
 
 export default function RootLayout({
