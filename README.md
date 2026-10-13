@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+  <!-- PROJECT LOGO / HEADER -->
+  <a href="https://github.com/karamas13/down_the_gap">
+    <img src="public/images/MainLogo.avif" alt="Kato Ap' To Avlaki Logo" width="180" height="auto" />
+  </a>
 
-First, run the development server:
+  <h1 align="center">🌾 Κάτω Απ' Το Αυλάκι</h1>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  <p align="center">
+    <strong>A high-performance, mobile-first web application for organic produce directly from farm to table.</strong>
+  </p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  <p align="center">
+    <a href="#key-features">Key Features</a> •
+    <a href="#tech-stack">Tech Stack</a> •
+    <a href="#getting-started">Getting Started</a> •
+    <a href="#architecture--design">Architecture</a> •
+    <a href="#license">License</a>
+  </p>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  <!-- BADGES -->
+  <p align="center">
+    <img src="https://img.shields.io/badge/Next.js_14+-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+    <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+  </p>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+</div>
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📖 About The Project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Kato Ap' To Avlaki** (Κάτω Απ' Το Αυλάκι) is an artisanal digital showcase designed to bridge local organic farmers directly with consumers. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application focuses heavily on **mobile layout stability**, pixel-perfect responsive design, and fluid design delivering a native-like experience across low and high-DPI viewports alike (including OLED displays).
 
-## Deploy on Vercel
+### ✨ Key Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* **📱 Mobile-First Responsive Design:** Adaptive layouts optimized for high-DPI hardware (Google Pixel, iOS) with precise padding and dynamic dynamic viewport height behavior.
+* **⚡ High-Performance Stats & Counters:** Smooth Framer Motion counter animations engineered with zero-margin Intersection Observers to eliminate viewport execution freezes.
+* **🥬 Dynamic Product Catalog:** Real-time stock status badges, seasonality highlights (Summer/Winter yield), and interactive product inspection modals powered by React Portals.
+* **🎨 Modern Organic UI:** Custom visual palette built with warm earthy undertones, smooth linear gradients, and responsive 3D card tilt effects for desktop interaction.
+* **📍 Contextual Modals & Navigation:** Smart location-aware action triggers via Next.js App Router hooks (`usePathname`) ensuring seamless user flows.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🛠️ Tech Stack
+
+* **Framework:** [Next.js (App Router)](https://nextjs.org/)
+* **Language:** [TypeScript](https://www.typescriptlang.org/)
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+* **Animations:** [Framer Motion](https://www.framer.com/motion/)
+* **Database & Auth:** [Supabase](https://supabase.com/)
+* **Icons:** [Lucide React](https://lucide.dev/)
+
+---
