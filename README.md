@@ -11,14 +11,6 @@
     <strong>A high-performance, mobile-first web application for organic produce directly from farm to table.</strong>
   </p>
 
-  <p align="center">
-    <a href="#key-features">Key Features</a> •
-    <a href="#tech-stack">Tech Stack</a> •
-    <a href="#getting-started">Getting Started</a> •
-    <a href="#architecture--design">Architecture</a> •
-    <a href="#license">License</a>
-  </p>
-
   <!-- BADGES -->
   <p align="center">
     <img src="https://img.shields.io/badge/Next.js_14+-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
